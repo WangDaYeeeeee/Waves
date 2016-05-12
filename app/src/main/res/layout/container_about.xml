@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:background="?attr/root_background">
+
+    <RelativeLayout
+        android:id="@+id/container_about_title_container"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/shot_title_container_height"
+        android:background="?attr/sub_root_background">
+
+        <ImageView
+            android:id="@+id/container_about_app_icon"
+            android:layout_width="@dimen/large_icon_size"
+            android:layout_height="@dimen/large_icon_size"
+            android:layout_margin="@dimen/card_info_margin"
+            android:foreground="?attr/selectableItemBackground"
+            android:scaleType="centerCrop"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:background="@android:color/transparent"
+            tools:src="@drawable/ic_launcher"
+            tools:ignore="ContentDescription,RtlHardcoded" />
+
+        <TextView
+            android:id="@+id/container_about_app_name"
+            android:layout_toRightOf="@id/container_about_app_icon"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="@dimen/card_info_margin"
+            android:layout_marginRight="@dimen/card_info_margin"
+            android:singleLine="true"
+            android:textColor="?attr/colorPrimary"
+            style="@style/large_title_text"
+            tools:text="Waves -0.0.1 beta"
+            tools:ignore="RtlHardcoded" />
+
+        <TextView
+            android:id="@+id/container_about_powered"
+            android:layout_toRightOf="@id/container_about_app_icon"
+            android:layout_below="@id/container_about_app_name"
+            android:layout_marginBottom="@dimen/card_info_margin"
+            android:layout_marginRight="@dimen/card_info_margin"
+            android:singleLine="true"
+            android:text="@string/powered"
+            style="@style/subtitle_text"
+            tools:ignore="RtlHardcoded" />
+
+    </RelativeLayout>
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/container_shot_data_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/root_background">
+
+        <org.sufficientlysecure.htmltextview.HtmlTextView
+            android:id="@+id/container_about_app_description"
+            android:layout_marginTop="26dp"
+            android:layout_margin="@dimen/card_info_margin"
+            android:textColor="?attr/content_color"
+            style="@style/content_text"
+            tools:text="You can contact me by:\n\nwangdayeeeeee@gamial.com\ngithub.com/WangDaYe" />
+
+        <FrameLayout
+            android:layout_marginLeft="@dimen/card_info_margin"
+            android:layout_marginRight="@dimen/card_info_margin"
+            android:background="?attr/sub_root_background"
+            android:layout_width="match_parent"
+            android:layout_height="1dp" />
+
+        <TextView
+            android:text="@string/thx"
+            android:layout_margin="@dimen/card_info_margin"
+            style="@style/title_text"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/container_about_openSourceList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </android.support.design.widget.AppBarLayout>
+
+</LinearLayout>

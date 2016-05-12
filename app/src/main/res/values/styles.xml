@@ -1,0 +1,135 @@
+<resources>
+
+    <!-- Theme -->
+    <style name="WavesTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="root_background">@color/colorRoot</item>
+        <item name="sub_root_background">@color/colorSubRoot</item>
+        <item name="card_background">@color/colorCard</item>
+        <item name="title_color">@color/colorTextDark</item>
+        <item name="subtitle_color">@color/colorTextGrey</item>
+        <item name="content_color">@color/colorTextDark2nd</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="WavesTheme.Translucent">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
+
+    <style name="WavesTheme.Translucent.Dribbble">
+        <item name="colorAccent">@color/colorDribbblePink</item>
+    </style>
+
+    <style name="WavesTheme.Translucent.About">
+        <item name="colorAccent">@color/colorTextDark2nd</item>
+        <item name="title_color">@color/colorDribbblePink</item>
+    </style>
+    
+    <!-- Toolbar -->
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Dark" />
+
+    <!-- Text -->
+    <style name="title_text">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/title_text_size</item>
+        <item name="android:textColor">?attr/title_color</item>
+    </style>
+
+    <style name="subtitle_text">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/subtitle_text_size</item>
+        <item name="android:textColor">?attr/subtitle_color</item>
+    </style>
+
+    <style name="content_text">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/content_text_size</item>
+        <item name="android:textColor">?attr/content_color</item>
+    </style>
+
+    <style name="large_title_text">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/large_title_text_size</item>
+        <item name="android:textColor">?attr/title_color</item>
+    </style>
+
+    <style name="about_app_title" parent="title_text">
+        <item name="android:layout_marginTop">@dimen/card_info_margin</item>
+    </style>
+
+    <style name="about_app_content" parent="content_text">
+        <item name="android:layout_marginBottom">@dimen/card_info_margin</item>
+    </style>
+
+    <style name="comment_title" parent="title_text">
+        <item name="android:textSize">@dimen/content_text_size</item>
+    </style>
+
+    <style name="comment_content" parent="subtitle_text">
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <!-- card -->
+    <style name="material_card">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">@dimen/card_margin</item>
+        <item name="android:layout_marginLeft">@dimen/card_margin</item>
+        <item name="android:layout_marginRight">@dimen/card_margin</item>
+        <item name="android:layout_marginBottom">@dimen/card_margin</item>
+        <item name="cardCornerRadius">2dp</item>
+        <item name="cardElevation">2dp</item>
+        <item name="android:clickable">true</item>
+        <item name="android:foreground">?attr/selectableItemBackground</item>
+    </style>
+
+    <style name="list_card" parent="material_card">
+        <item name="android:layout_marginTop">0dp</item>
+    </style>
+
+    <style name="reveal_card" parent="material_card">
+        <item name="android:layout_height">match_parent</item>
+        <item name="cardBackgroundColor">@android:color/transparent</item>
+        <item name="cardElevation">0dp</item>
+    </style>
+
+    <!-- button -->
+    <style name="git_button">
+        <item name="android:layout_width">48dp</item>
+        <item name="android:layout_height">36dp</item>
+        <item name="android:text">GIF</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/subtitle_text_size</item>
+        <item name="android:alpha">0.5</item>
+        <item name="android:layout_alignParentRight">true</item>
+        <item name="android:layout_alignParentBottom">true</item>
+        <item name="android:layout_margin">@dimen/card_margin</item>
+    </style>
+
+    <style name="doneButton">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_margin">@dimen/card_info_margin</item>
+        <item name="android:text">@string/done</item>
+        <item name="android:textSize">@dimen/content_text_size</item>
+        <item name="android:textColor">?attr/colorAccent</item>
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
+    <!-- image -->
+    <style name="material_icon">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_margin">@dimen/card_info_margin</item>
+    </style>
+
+</resources>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container_nav_header"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/nav_header_height"
+    android:orientation="vertical"
+    android:theme="@style/ThemeOverlay.AppCompat.Dark">
+
+    <ImageView
+        android:id="@+id/container_nav_header_background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        tools:src="@drawable/nav_header"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/container_nav_header_userId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/card_info_margin"
+        android:layout_marginBottom="@dimen/card_info_margin"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:text="@string/login_dribble"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        tools:ignore="RtlHardcoded" />
+
+    <TextView
+        android:id="@+id/container_nav_header_userName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/card_info_margin"
+        android:layout_marginBottom="2dp"
+        android:layout_alignParentLeft="true"
+        android:layout_above="@id/container_nav_header_userId"
+        android:text="@string/app_name"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        tools:ignore="RtlHardcoded" />
+<!--
+    <com.wangdaye.waves.ui.widget.CircleImageView
+        android:id="@+id/container_nav_header_userIcon"
+        android:layout_width="@dimen/large_icon_size"
+        android:layout_height="@dimen/large_icon_size"
+        android:layout_alignParentLeft="true"
+        android:layout_above="@id/container_nav_header_userName"
+        android:layout_marginLeft="@dimen/card_info_margin"
+        android:layout_marginBottom="@dimen/card_info_margin"
+        app:civ_fill_color="@android:color/white"
+        tools:src="@drawable/ic_launcher"
+        tools:ignore="RtlHardcoded" />
+-->
+</RelativeLayout>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- style -->
+    <declare-styleable name="root_background">
+        <attr name="root_background" format="reference|color" />
+    </declare-styleable>
+
+    <declare-styleable name="sub_root_background">
+        <attr name="sub_root_background" format="reference|color" />
+    </declare-styleable>
+
+    <declare-styleable name="line_background">
+        <attr name="line_background" format="reference|color" />
+    </declare-styleable>
+
+    <declare-styleable name="card_background">
+        <attr name="card_background" format="reference|color" />
+    </declare-styleable>
+
+    <declare-styleable name="title_color">
+        <attr name="title_color" format="reference|color" />
+    </declare-styleable>
+
+    <declare-styleable name="subtitle_color">
+        <attr name="subtitle_color" format="reference|color" />
+    </declare-styleable>
+
+    <declare-styleable name="content_color">
+        <attr name="content_color" format="reference|color" />
+    </declare-styleable>
+
+    <!-- circleImageView -->
+    <declare-styleable name="CircleImageView">
+        <attr name="civ_border_width" format="dimension" />
+        <attr name="civ_border_color" format="color" />
+        <attr name="civ_border_overlay" format="boolean" />
+        <attr name="civ_fill_color" format="color" />
+    </declare-styleable>
+
+    <!-- revealView -->
+
+    <declare-styleable name="PowerImageView">
+        <attr name="auto_play" format="boolean"/>
+    </declare-styleable>
+
+</resources>

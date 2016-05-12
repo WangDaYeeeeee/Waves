@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fragment_create"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.wangdaye.waves.ui.widget.RevealView
+        android:id="@+id/fragment_create_revealView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <LinearLayout
+        android:id="@+id/fragment_create_container"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+    </LinearLayout>
+
+</android.support.design.widget.CoordinatorLayout>

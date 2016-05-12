@@ -1,0 +1,19 @@
+<resources>
+
+    <style name="WavesTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="root_background">@color/colorRoot</item>
+        <item name="sub_root_background">@color/colorSubRoot</item>
+        <item name="card_background">@color/colorCard</item>
+        <item name="title_color">@color/colorTextDark</item>
+        <item name="subtitle_color">@color/colorTextGrey</item>
+        <item name="content_color">@color/colorTextDark2nd</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+    </style>
+
+</resources>

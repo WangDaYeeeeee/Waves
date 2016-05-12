@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="shots_sort">
+        <item>Popular</item>
+        <item>Recent</item>
+    </string-array>
+    <string-array name="key_shots_sort">
+        <item>popular</item>
+        <item>recent</item>
+    </string-array>
+
+    <string-array name="shots_list">
+        <item>AnyType</item>
+        <item>Animated</item>
+        <item>Attachments</item>
+        <item>Debuts</item>
+        <item>Playoffs</item>
+        <item>Rebounds</item>
+        <item>Teams</item>
+    </string-array>
+    <string-array name="key_shots_list">
+        <item>any_type</item>
+        <item>animated</item>
+        <item>attachments</item>
+        <item>debuts</item>
+        <item>playoffs</item>
+        <item>rebounds</item>
+        <item>teams</item>
+    </string-array>
+
+</resources>

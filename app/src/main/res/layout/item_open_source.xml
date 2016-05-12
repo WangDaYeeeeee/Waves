@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:foreground="?attr/selectableItemBackground"
+    tools:background="?attr/root_background">
+
+    <TextView
+        android:id="@+id/item_open_source_title"
+        android:layout_marginTop="@dimen/card_info_margin"
+        android:layout_marginLeft="@dimen/card_info_margin"
+        style="@style/large_title_text"
+        tools:text="Glide"
+        tools:ignore="RtlHardcoded" />
+
+    <TextView
+        android:id="@+id/item_open_source_subtitle"
+        style="@style/subtitle_text"
+        android:layout_marginLeft="@dimen/card_info_margin"
+        tools:text="Jun Tommy"
+        tools:ignore="RtlHardcoded" />
+
+    <org.sufficientlysecure.htmltextview.HtmlTextView
+        android:id="@+id/item_open_source_web"
+        android:layout_margin="@dimen/card_info_margin"
+        style="@style/content_text"
+        tools:text="@string/material_icon_web"
+        tools:textColor="?attr/colorAccent" />
+
+    <FrameLayout
+        android:background="?attr/sub_root_background"
+        android:layout_width="match_parent"
+        android:layout_height="1dp" />
+
+</LinearLayout>

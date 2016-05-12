@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fragment_filtrate"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <FrameLayout
+            android:id="@+id/fragment_filtrate_background"
+            android:background="@color/colorShadow"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <FrameLayout
+            android:id="@+id/fragment_filtrate_center"
+            android:layout_centerInParent="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:ignore="UselessLeaf" />
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/fragment_filtrate_card"
+            style="@style/reveal_card"
+            android:layout_above="@id/fragment_filtrate_center">
+
+            <com.wangdaye.waves.ui.widget.RevealView
+                android:id="@+id/fragment_filtrate_revealView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <RelativeLayout
+                android:id="@+id/fragment_filtrate_infoContainer"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <TextView
+                    android:id="@+id/fragment_filtrate_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/card_info_margin"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentLeft="true"
+                    android:text="@string/filtrate_shots"
+                    android:textSize="@dimen/large_title_text_size"
+                    android:textColor="@color/colorTextDark"
+                    tools:ignore="RtlHardcoded" />
+
+                <Button
+                    android:id="@+id/fragment_filtrate_doneButton"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentRight="true"
+                    style="@style/doneButton"
+                    tools:ignore="RtlHardcoded" />
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@id/fragment_filtrate_title"
+                    android:layout_above="@id/fragment_filtrate_doneButton">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1">
+
+                        <TextView
+                            android:id="@+id/fragment_filtrate_sortTitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="@dimen/title_text_size"
+                            android:textColor="@color/colorTextDark2nd"
+                            android:text="@string/sort"
+                            android:layout_margin="@dimen/card_info_margin"
+                            android:layout_alignParentLeft="true"
+                            android:layout_centerVertical="true"
+                            tools:ignore="RelativeOverlap,RtlHardcoded" />
+
+                        <Spinner
+                            android:id="@+id/fragment_filtrate_sortSpinner"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/card_info_margin"
+                            android:layout_marginRight="@dimen/card_info_margin"
+                            android:layout_alignParentRight="true"
+                            android:layout_toRightOf="@id/fragment_filtrate_sortTitle"
+                            android:layout_centerVertical="true"
+                            android:entries="@array/shots_sort"
+                            tools:ignore="RtlHardcoded" />
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1">
+
+                        <TextView
+                            android:id="@+id/fragment_filtrate_listTitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="@dimen/title_text_size"
+                            android:textColor="@color/colorTextDark2nd"
+                            android:text="@string/list"
+                            android:layout_margin="@dimen/card_info_margin"
+                            android:layout_alignParentLeft="true"
+                            android:layout_centerVertical="true"
+                            tools:ignore="RelativeOverlap,RtlHardcoded" />
+
+                        <Spinner
+                            android:id="@+id/fragment_filtrate_listSpinner"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/card_info_margin"
+                            android:layout_marginRight="@dimen/card_info_margin"
+                            android:layout_alignParentRight="true"
+                            android:layout_toRightOf="@id/fragment_filtrate_listTitle"
+                            android:layout_centerVertical="true"
+                            android:entries="@array/shots_list"
+                            tools:ignore="RtlHardcoded" />
+
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+        </android.support.v7.widget.CardView>
+
+    </RelativeLayout>
+
+</android.support.design.widget.CoordinatorLayout>

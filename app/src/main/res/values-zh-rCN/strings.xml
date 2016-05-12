@@ -1,0 +1,96 @@
+<resources>
+
+    <!-- application -->
+    <string name="app_name">Waves</string>
+    <string name="version_code">0.0.1</string>
+    <string name="powered">Powered by Dribbble.</string>
+    <string name="author_name">wangdaye</string>
+    <string name="my_email">wangdayeeeeee@gmail.com</string>
+    <string name="my_github">https://github.com/WangDaYeeeeee</string>
+    <string name="material_icon_web">https://materialdesignicons.com/</string>
+    <string name="dribbble_web">https://dribbble.com/</string>
+    <string name="contact_me">你可以通过以下方式联系我：</string>
+
+    <!-- drawer -->
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <!-- key words -->
+    <string name="shots">Shots</string>
+    <string name="settings">设置</string>
+    <string name="search">搜索</string>
+    <string name="filtrate">筛选</string>
+    <string name="filtrate_shots">筛选 Shots</string>
+    <string name="done">完成</string>
+    <string name="cancel">取消</string>
+    <string name="sort">排序</string>
+    <string name="list">清单</string>
+    <string name="version">版本号</string>
+    <string name="changelog">更新日志</string>
+    <string name="about_me">关于我</string>
+    <string name="author">作者</string>
+    <string name="email">邮箱</string>
+    <string name="thx">致谢</string>
+    <string name="icon">Icon</string>
+    <string name="comments">评论</string>
+
+    <!-- feedback -->
+    <string name="login_dribble">Hello Dribbble.</string>
+    <string name="get_shots_data_failed">获取Shots失败</string>
+    <string name="refreshing_new">正在刷新…</string>
+    <string name="loading_more">正在加载更多…</string>
+    <string name="save_failed">数据存储失败</string>
+    <string name="cannot_found_sd_card">无法写入到SD-card</string>
+    <string name="cannot_create_file_dir">无法创建文件路径</string>
+    <string name="air_ball">AIR BALL!</string>
+    <string name="touch_to_retry">点击重试</string>
+    <string name="searchbar_hint">从Dribbble中搜索…</string>
+    <string name="download_start">下载开始</string>
+    <string name="download_success">下载成功</string>
+    <string name="no_data">无数据</string>
+    <string name="no_comments">无评论</string>
+
+    <!-- nav item -->
+    <string name="nav_home">Explore</string>
+    <string name="nav_myBuckets">My buckets (soon)</string>
+    <string name="nav_myLikes">My likes (soon)</string>
+    <string name="nav_myShots">My shots (soon)</string>
+    <string name="nav_settings">@string/settings</string>
+    <string name="nav_about">关于</string>
+
+    <!-- menu -->
+    <string name="action_search">@string/search</string>
+    <string name="action_filtrate">@string/filtrate</string>
+
+    <!-- intent key words -->
+    <string name="key_transition_anim">transition_anim</string>
+    <string name="key_shot_id">shot_id</string>
+    <string name="key_image_uri">image_uri</string>
+    <string name="key_player_icon_uri">player_icon_uri</string>
+    <string name="key_web_uri">web_uri</string>
+    <string name="key_title">title</string>
+    <string name="key_sub_title">sub_title</string>
+    <string name="key_content">content</string>
+    <string name="key_likes">likes</string>
+    <string name="key_views">views</string>
+    <string name="key_buckets">buckets</string>
+    <string name="key_values">values</string>
+    <string name="key_tags">tags</string>
+    <string name="key_touch_x">touch_x</string>
+    <string name="key_touch_y">touch_y</string>
+    <string name="key_reveal_color">reveal_color</string>
+
+    <!-- settings -->
+    <string name="category_basic">基础</string>
+    <string name="settings_shots_sort">选择Shots的默认排序方式</string>
+    <string name="settings_shots_sort_summary">默认为Popular</string>
+    <string name="settings_shots_list">选择Shots的默认筛选类型</string>
+    <string name="settings_shots_list_summary">默认为AnyType</string>
+
+    <!-- share preference -->
+    <string name="key_shots_sort">shots_sort</string>
+    <string name="key_shots_list">shots_list</string>
+    <string name="default_shots_sort">popular</string>
+    <string name="default_shots_list">any_type</string>
+
+</resources>

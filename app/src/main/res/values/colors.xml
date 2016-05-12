@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- light theme -->
+    <color name="colorPrimary">#333333</color>
+    <color name="colorPrimaryDark">#292929</color>
+    <color name="colorAccent">#80deea</color>
+    <color name="colorRoot">#ffffff</color>
+    <color name="colorSubRoot">#eeeeee</color>
+    <color name="colorShadow">@color/colorPrimary</color>
+    <color name="colorCard">@color/cardview_light_background</color>
+    <color name="colorDribbblePink">#ea4c89</color>
+
+    <!-- text color -->
+    <color name="colorTextDark">#424242</color>
+    <color name="colorTextDark2nd">#616161</color>
+    <color name="colorTextGrey">#9e9e9e</color>
+    <color name="colorTextGrey2nd">#bdbdbd</color>
+    <color name="colorTextLight">#fafafa</color>
+    <color name="colorTextLight2nd">#f5f5f5</color>
+
+</resources>

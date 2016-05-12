@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <com.wangdaye.waves.ui.widget.RevealView
+        android:id="@+id/fragment_search_background"
+        android:alpha="0.7"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/fragment_search_appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/fragment_search_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary">
+
+            <EditText
+                android:id="@+id/container_searchbar_editText"
+                android:background="@android:color/transparent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:textColorHint="?attr/subtitle_color"
+                android:textSize="@dimen/title_text_size"
+                android:textColor="?attr/content_color"
+                android:hint="@string/searchbar_hint"
+                android:imeOptions="actionSearch"
+                android:singleLine="true"
+                android:inputType="text"
+                tools:ignore="RtlHardcoded" />
+
+        </android.support.v7.widget.Toolbar>
+
+    </android.support.design.widget.AppBarLayout>
+
+</android.support.design.widget.CoordinatorLayout>

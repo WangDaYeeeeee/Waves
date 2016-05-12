@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:title="@string/settings" >
+
+    <PreferenceCategory
+        android:title="@string/category_basic"
+        android:layout="@layout/preference_category" >
+
+        <ListPreference
+            android:key="@string/key_shots_sort"
+            android:title="@string/settings_shots_sort"
+            android:summary="@string/settings_shots_sort_summary"
+            android:entries="@array/shots_sort"
+            android:entryValues="@array/key_shots_sort"
+            android:dialogTitle="@string/settings_shots_sort"
+            android:defaultValue="@string/default_shots_sort" />
+
+        <ListPreference
+            android:key="@string/key_shots_list"
+            android:title="@string/settings_shots_list"
+            android:summary="@string/settings_shots_list_summary"
+            android:entries="@array/shots_list"
+            android:entryValues="@array/key_shots_list"
+            android:dialogTitle="@string/settings_shots_list"
+            android:defaultValue="@string/default_shots_list" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>
