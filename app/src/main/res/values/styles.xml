@@ -26,7 +26,7 @@
 
     <style name="WavesTheme.Translucent.About">
         <item name="colorAccent">@color/colorTextDark2nd</item>
-        <item name="title_color">@color/colorDribbblePink</item>
+        <item name="title_color">@color/colorAccent</item>
     </style>
     
     <!-- Toolbar -->
@@ -123,6 +123,24 @@
         <item name="android:textSize">@dimen/content_text_size</item>
         <item name="android:textColor">?attr/colorAccent</item>
         <item name="android:background">@android:color/transparent</item>
+    </style>
+
+    <style name="material_button">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/content_text_size</item>
+        <item name="android:textColor">?attr/root_background</item>
+        <item name="android:background">?attr/colorAccent</item>
+    </style>
+
+    <style name="about_button" parent="material_button">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">36dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_marginLeft">@dimen/card_margin</item>
+        <item name="android:layout_marginRight">@dimen/card_margin</item>
+        <item name="android:layout_marginBottom">@dimen/card_info_margin</item>
+        <item name="android:background">?attr/title_color</item>
     </style>
 
     <!-- image -->

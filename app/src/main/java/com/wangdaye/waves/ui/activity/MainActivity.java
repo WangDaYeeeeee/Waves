@@ -25,7 +25,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.util.Util;
 import com.wangdaye.waves.R;
-import com.wangdaye.waves.ui.fragment.CreateFragment;
 import com.wangdaye.waves.ui.fragment.HomeFragment;
 import com.wangdaye.waves.ui.widget.RevealFragment;
 import com.wangdaye.waves.ui.widget.MyFloatingActionButton;
@@ -345,8 +344,6 @@ public class MainActivity extends ThemeActivity
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.container_main_fab:
-                CreateFragment createFragment = new CreateFragment();
-                insertFragment(createFragment);
                 break;
         }
     }

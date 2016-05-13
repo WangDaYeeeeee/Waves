@@ -82,8 +82,6 @@ public class ShotActivity extends ThemeActivity
     private WavesLoadingView wavesLoadingView;
     private RecyclerView recyclerView;
 
-    private DribbbleService dribbbleService;
-
     // data
     private boolean started;
     private boolean isGif;
@@ -117,7 +115,7 @@ public class ShotActivity extends ThemeActivity
 
         revealView.setState(RevealView.REVEALING);
         wavesLoadingView.setState(WavesLoadingView.SHOWING);
-        dribbbleService.getDribbbleComments(getIntent().getLongExtra(getString(R.string.key_shot_id), 0));
+        DribbbleService.instance.getDribbbleComments(getIntent().getLongExtra(getString(R.string.key_shot_id), 0), this);
     }
 
     @Override
@@ -265,9 +263,6 @@ public class ShotActivity extends ThemeActivity
         this.isGif = uri.substring(uri.length() - 3).equals("gif");
 
         this.typeface = TypefaceUtils.getTypeface(this);
-
-        this.dribbbleService = new DribbbleService();
-        dribbbleService.setGetCommentsListener(this);
     }
 
     // download.
@@ -458,7 +453,7 @@ public class ShotActivity extends ThemeActivity
             @Override
             public void onClick(View v) {
                 wavesLoadingView.setState(WavesLoadingView.SHOWING);
-                dribbbleService.getDribbbleComments(getIntent().getLongExtra(getString(R.string.key_shot_id), 0));
+                DribbbleService.instance.getDribbbleComments(getIntent().getLongExtra(getString(R.string.key_shot_id), 0), ShotActivity.this);
                 wavesLoadingView.setOnClickListener(null);
             }
         });

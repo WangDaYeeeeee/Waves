@@ -18,20 +18,19 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
- * Shots getter, used to get shots list from Dribbble.
+ * Dribbble service.
  * */
 
-public class DribbbleService {
+public enum DribbbleService {
+
+    instance;
+
     // widget
     private List<DataLoadingSubject.DataLoadingCallbacks> loadingCallbacks;
 
-    private GetShotsListener getShotsListener;
-    private GetOneShotListener getOneShotListener;
-    private GetCommentsListener getCommentsListener;
-
     /** <br> shot. */
 
-    public void getDribbbleShots(String shotSort, String shotList, int page, boolean loadMore) {
+    public void getDribbbleShots(String shotSort, String shotList, int page, boolean loadMore, GetShotsListener listener) {
         OkHttpClient client = new OkHttpClient.Builder()
                 .addInterceptor(new AuthInterceptor(Constants.CLIENT_TOKEN))
                 .build();
@@ -47,12 +46,12 @@ public class DribbbleService {
                 .build()
                 .create((DribbbleShotsAPI.class));
 
-        new ShotsManager(shotSort, shotList).selectApi(api, page, loadMore, getShotsListener);
+        new ShotsManager(shotSort, shotList).selectApi(api, page, loadMore, listener);
     }
 
     /** <br> search. */
 
-    public void searchDribbbleShots(String text, String sort, int page, final boolean loadMore) {
+    public void searchDribbbleShots(String text, String sort, int page, final boolean loadMore, GetShotsListener listener) {
 
         DribbbleSearchAPI api = new Retrofit.Builder()
                 .baseUrl(DribbbleSearchAPI.ENDPOINT)
@@ -60,12 +59,12 @@ public class DribbbleService {
                 .build()
                 .create((DribbbleSearchAPI.class));
 
-        new SearchManager(sort).selectApi(api, text, page, loadMore, getShotsListener);
+        new SearchManager(sort).selectApi(api, text, page, loadMore, listener);
     }
 
     /** <br> comments */
 
-    public void getDribbbleComments(long shotId) {
+    public void getDribbbleComments(long shotId, GetCommentsListener listener) {
         OkHttpClient client = new OkHttpClient.Builder()
                 .addInterceptor(new AuthInterceptor(Constants.CLIENT_TOKEN))
                 .build();
@@ -81,33 +80,7 @@ public class DribbbleService {
                 .build()
                 .create((DribbbleCommentsAPI.class));
 
-        new CommentsManager().selectApi(api, shotId, getCommentsListener);
-    }
-
-    /** <br> getters & setters. */
-
-    public void cleanGetShotsListener() {
-        this.getShotsListener = null;
-    }
-
-    public void setGetShotsListener(GetShotsListener getShotsListener) {
-        this.getShotsListener = getShotsListener;
-    }
-
-    public void cleanGetOneShotListener() {
-        this.getOneShotListener = null;
-    }
-
-    public void setGetOneShotListener(GetOneShotListener getOneShotListener) {
-        this.getOneShotListener = getOneShotListener;
-    }
-
-    public void cleanGetCommentsListener() {
-        this.getCommentsListener = null;
-    }
-
-    public void setGetCommentsListener(GetCommentsListener getCommentsListener) {
-        this.getCommentsListener = getCommentsListener;
+        new CommentsManager().selectApi(api, shotId, listener);
     }
 
     /** <br> interface. */

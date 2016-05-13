@@ -1,8 +1,10 @@
 package com.wangdaye.waves.ui.activity;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -10,6 +12,7 @@ import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -41,7 +44,7 @@ import java.util.List;
  * */
 
 public class AboutActivity extends ThemeActivity
-        implements SwipeBackLayout.OnSwipeListener {
+        implements SwipeBackLayout.OnSwipeListener, View.OnClickListener {
     // widget
     private ShotBarLayout shotBar;
     private FrameLayout statusBar;
@@ -146,9 +149,16 @@ public class AboutActivity extends ThemeActivity
     }
 
     private void initDataPart() {
+
         HtmlTextView description = (HtmlTextView) findViewById(R.id.container_about_app_description);
         assert description != null;
         description.setHtmlFromString(appDescription, new HtmlTextView.RemoteImageGetter());
+
+        Button changelogButton = (Button) findViewById(R.id.container_about_changelogButton);
+        changelogButton.setOnClickListener(this);
+
+        Button githubButton = (Button) findViewById(R.id.container_about_githubButton);
+        githubButton.setOnClickListener(this);
 
         List<OpenSourceItem> itemList = new ArrayList<>();
         for (int i = 0; i < web.length; i ++) {
@@ -168,8 +178,6 @@ public class AboutActivity extends ThemeActivity
         this.typeface = TypefaceUtils.getTypeface(this);
 
         this.appDescription = ""
-                + "<p>" + getString(R.string.contact_me) + "</p>"
-                + "<br />"
                 + "<p>" + "<a href=\"" + getString(R.string.my_email) + "\">" + getString(R.string.my_email) + "</a>"
                 + "<p>" + "<a href=\"" + getString(R.string.my_github) + "\" >" + getString(R.string.my_github) + "</a>";
 
@@ -222,6 +230,24 @@ public class AboutActivity extends ThemeActivity
     }
 
     /** interface. */
+
+    // on click listener.
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+
+            case R.id.container_about_changelogButton:
+                Uri changelog = Uri.parse("https://github.com/WangDaYeeeeee/Waves/releases");
+                startActivity(new Intent(Intent.ACTION_VIEW, changelog));
+                break;
+
+            case R.id.container_about_githubButton:
+                Uri github = Uri.parse("https://github.com/WangDaYeeeeee/Waves");
+                startActivity(new Intent(Intent.ACTION_VIEW, github));
+                break;
+        }
+    }
 
     // swipe back
 

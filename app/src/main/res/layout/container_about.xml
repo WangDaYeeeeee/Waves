@@ -56,13 +56,51 @@
         android:layout_height="wrap_content"
         android:background="?attr/root_background">
 
+        <TextView
+            android:text="@string/contact_me"
+            android:layout_margin="@dimen/card_info_margin"
+            style="@style/title_text"/>
+
         <org.sufficientlysecure.htmltextview.HtmlTextView
             android:id="@+id/container_about_app_description"
             android:layout_marginTop="26dp"
             android:layout_margin="@dimen/card_info_margin"
             android:textColor="?attr/content_color"
             style="@style/content_text"
-            tools:text="You can contact me by:\n\nwangdayeeeeee@gamial.com\ngithub.com/WangDaYe" />
+            tools:text="wangdayeeeeee@gamial.com\ngithub.com/WangDaYe" />
+
+        <FrameLayout
+            android:layout_marginLeft="@dimen/card_info_margin"
+            android:layout_marginRight="@dimen/card_info_margin"
+            android:background="?attr/sub_root_background"
+            android:layout_width="match_parent"
+            android:layout_height="1dp" />
+
+        <TextView
+            android:text="@string/about_app"
+            android:layout_margin="@dimen/card_info_margin"
+            style="@style/title_text"/>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/card_margin"
+            android:paddingRight="@dimen/card_margin">
+
+            <Button
+                android:id="@+id/container_about_changelogButton"
+                android:text="Changelog"
+                style="@style/about_button"
+                tools:ignore="HardcodedText" />
+
+            <Button
+                android:id="@+id/container_about_githubButton"
+                android:text="GitHub"
+                style="@style/about_button"
+                tools:ignore="HardcodedText" />
+
+        </LinearLayout>
 
         <FrameLayout
             android:layout_marginLeft="@dimen/card_info_margin"

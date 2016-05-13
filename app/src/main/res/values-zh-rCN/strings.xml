@@ -2,14 +2,15 @@
 
     <!-- application -->
     <string name="app_name">Waves</string>
-    <string name="version_code">0.0.1</string>
+    <string name="version_code">0.0.2</string>
     <string name="powered">Powered by Dribbble.</string>
     <string name="author_name">wangdaye</string>
     <string name="my_email">wangdayeeeeee@gmail.com</string>
     <string name="my_github">https://github.com/WangDaYeeeeee</string>
     <string name="material_icon_web">https://materialdesignicons.com/</string>
     <string name="dribbble_web">https://dribbble.com/</string>
-    <string name="contact_me">你可以通过以下方式联系我：</string>
+    <string name="contact_me">联系作者</string>
+    <string name="about_app">关于应用</string>
 
     <!-- drawer -->
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -26,8 +27,6 @@
     <string name="sort">排序</string>
     <string name="list">清单</string>
     <string name="version">版本号</string>
-    <string name="changelog">更新日志</string>
-    <string name="about_me">关于我</string>
     <string name="author">作者</string>
     <string name="email">邮箱</string>
     <string name="thx">致谢</string>

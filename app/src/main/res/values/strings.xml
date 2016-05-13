@@ -2,14 +2,14 @@
 
     <!-- application -->
     <string name="app_name">Waves</string>
-    <string name="version_code">0.0.1</string>
+    <string name="version_code">0.0.2</string>
     <string name="powered">Powered by Dribbble.</string>
     <string name="author_name">wangdaye</string>
     <string name="my_email">wangdayeeeeee@gmail.com</string>
     <string name="my_github">https://github.com/WangDaYeeeeee</string>
     <string name="material_icon_web">https://materialdesignicons.com/</string>
     <string name="dribbble_web">https://dribbble.com/</string>
-    <string name="contact_me">You can contact me by:</string>
+    <string name="contact_me">Contact author</string>
 
     <!-- drawer -->
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -26,13 +26,12 @@
     <string name="sort">Sort</string>
     <string name="list">List</string>
     <string name="version">Version</string>
-    <string name="changelog">Changelog</string>
-    <string name="about_me">About me</string>
     <string name="author">Author</string>
     <string name="email">Email</string>
     <string name="thx">Thx</string>
     <string name="icon">Icon</string>
     <string name="comments">Comments</string>
+    <string name="about_app">About app</string>
 
     <!-- feedback -->
     <string name="login_dribble">Hello Dribbble.</string>

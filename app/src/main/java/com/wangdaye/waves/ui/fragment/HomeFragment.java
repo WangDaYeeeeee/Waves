@@ -56,7 +56,6 @@ public class HomeFragment extends Fragment
     private SafeHandler<HomeFragment> handler;
 
     // data
-    private DribbbleService dribbbleService;
     private ShotsAdapter adapter;
 
     private String shotSort;
@@ -72,7 +71,7 @@ public class HomeFragment extends Fragment
 
         this.initData();
         this.initWidget(view);
-        dribbbleService.getDribbbleShots(shotSort, shotList, 1, false);
+        DribbbleService.instance.getDribbbleShots(shotSort, shotList, 1, false, this);
 
         new Timer().schedule(new TimerTask() {
             @Override
@@ -127,9 +126,6 @@ public class HomeFragment extends Fragment
     /** <br> data. */
 
     private void initData() {
-        this.dribbbleService = new DribbbleService();
-        dribbbleService.setGetShotsListener(this);
-
         MainActivity container = (MainActivity) getActivity();
         this.shotSort = container.getFiltrateData()[0];
         this.shotList = container.getFiltrateData()[1];
@@ -237,7 +233,7 @@ public class HomeFragment extends Fragment
 
     @Override
     public void onLoadMore() {
-        dribbbleService.getDribbbleShots(shotSort, shotList, ++ page, true);
+        DribbbleService.instance.getDribbbleShots(shotSort, shotList, ++ page, true, this);
     }
 
     // my swipe refresh layout listener.
@@ -245,18 +241,18 @@ public class HomeFragment extends Fragment
     @Override
     public void refreshNew() {
         if (isSearching) {
-            dribbbleService.searchDribbbleShots(text, shotSort, 1, false);
+            DribbbleService.instance.searchDribbbleShots(text, shotSort, 1, false, this);
         } else {
-            dribbbleService.getDribbbleShots(shotSort, shotList, 1, false);
+            DribbbleService.instance.getDribbbleShots(shotSort, shotList, 1, false, this);
         }
     }
 
     @Override
     public void loadMore() {
         if (isSearching) {
-            dribbbleService.searchDribbbleShots(text, shotSort, ++ page, true);
+            DribbbleService.instance.searchDribbbleShots(text, shotSort, ++ page, true, this);
         } else {
-            dribbbleService.getDribbbleShots(shotSort, shotList, ++ page, true);
+            DribbbleService.instance.getDribbbleShots(shotSort, shotList, ++ page, true, this);
         }
     }
 
