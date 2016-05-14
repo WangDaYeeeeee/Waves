@@ -29,7 +29,7 @@
 
         <activity
             android:name=".ui.activity.SettingsActivity"
-            android:theme="@style/WavesTheme" />
+            android:theme="@style/WavesTheme.Translucent" />
         <activity
             android:name=".ui.activity.AboutActivity"
             android:theme="@style/WavesTheme.Translucent.About" />

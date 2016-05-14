@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -19,6 +20,7 @@ import android.view.MenuItem;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -82,7 +84,10 @@ public class MainActivity extends ThemeActivity
         started = true;
         this.handler = new SafeHandler<>(this);
         this.initWidget();
-        this.initColorTheme(statusBar, getString(R.string.app_name), R.color.colorPrimary);
+        this.initColorTheme(getString(R.string.app_name), R.color.colorPrimary);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+        }
         this.changeFragment(HOME_FRAGMENT, true);
     }
 
@@ -149,10 +154,11 @@ public class MainActivity extends ThemeActivity
     /** <br> UI. */
 
     private void initWidget() {
-        this.statusBar = (FrameLayout) findViewById(R.id.container_main_statusBar);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-        }
+        FrameLayout statusBar = (FrameLayout) findViewById(R.id.container_main_statusBar);
+        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) statusBar.getLayoutParams();
+        params.height = getStatusBarHeight();
+        statusBar.setLayoutParams(params);
+        statusBar.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
 
         this.initFab();
         this.initDrawer();

@@ -10,8 +10,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import com.wangdaye.waves.R;
 import com.wangdaye.waves.utils.ImageUtils;
 
@@ -21,9 +19,8 @@ import com.wangdaye.waves.utils.ImageUtils;
 
 public abstract class ThemeActivity extends AppCompatActivity {
 
-    public void initColorTheme(FrameLayout statusBar, String name, int color) {
+    public void initColorTheme(String name, int color) {
         this.setWindowTop(name, color);
-        this.initStatusBar(statusBar);
     }
 
     public void setWindowTop(String name, int color) {
@@ -46,16 +43,6 @@ public abstract class ThemeActivity extends AppCompatActivity {
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             window.setStatusBarColor(Color.TRANSPARENT);
         }
-    }
-
-    public void initStatusBar(FrameLayout statusBar) {
-        if (statusBar == null) {
-            return;
-        }
-        LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) statusBar.getLayoutParams();
-        layoutParams.height = getStatusBarHeight();
-        statusBar.setLayoutParams(layoutParams);
-        statusBar.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
     }
 
     public int getStatusBarHeight() {

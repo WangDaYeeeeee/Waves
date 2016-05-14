@@ -79,7 +79,7 @@ public class AboutActivity extends ThemeActivity
         started = true;
 
         this.initWidget();
-        this.initColorTheme(null, getString(R.string.nav_about), R.color.colorPrimary);
+        this.initColorTheme(getString(R.string.nav_about), R.color.colorPrimary);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             getWindow().setNavigationBarColor(ContextCompat.getColor(this, R.color.colorPrimary));
         }

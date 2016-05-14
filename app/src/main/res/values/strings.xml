@@ -2,7 +2,7 @@
 
     <!-- application -->
     <string name="app_name">Waves</string>
-    <string name="version_code">0.0.2</string>
+    <string name="version_code">0.0.3</string>
     <string name="powered">Powered by Dribbble.</string>
     <string name="author_name">wangdaye</string>
     <string name="my_email">wangdayeeeeee@gmail.com</string>

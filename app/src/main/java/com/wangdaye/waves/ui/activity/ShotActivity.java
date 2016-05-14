@@ -108,7 +108,7 @@ public class ShotActivity extends ThemeActivity
         this.started = true;
 
         this.initWidget();
-        this.initColorTheme(null, getString(R.string.app_name), R.color.colorPrimary);
+        this.initColorTheme(getString(R.string.app_name), R.color.colorPrimary);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setNavigationBarColor(ContextCompat.getColor(this, R.color.colorPrimary));
         }

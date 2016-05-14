@@ -2,9 +2,11 @@ package com.wangdaye.waves.ui.activity;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.FrameLayout;
 
 import com.wangdaye.waves.R;
 import com.wangdaye.waves.ui.fragment.SettingsFragment;
@@ -16,7 +18,6 @@ import com.wangdaye.waves.ui.widget.ThemeActivity;
 
 public class SettingsActivity extends ThemeActivity
         implements View.OnClickListener {
-
     // data
     private boolean started;
 
@@ -24,6 +25,7 @@ public class SettingsActivity extends ThemeActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.initData();
+        this.setStatusBarTransparent();
         setContentView(R.layout.activity_settings);
     }
 
@@ -36,7 +38,7 @@ public class SettingsActivity extends ThemeActivity
         started = true;
 
         this.initWidget();
-        this.initColorTheme(null, getString(R.string.nav_settings), R.color.colorPrimary);
+        this.initColorTheme(getString(R.string.nav_settings), R.color.colorPrimary);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             getWindow().setNavigationBarColor(ContextCompat.getColor(this, R.color.colorPrimary));
         }
@@ -51,6 +53,12 @@ public class SettingsActivity extends ThemeActivity
     /** <br> widget. */
 
     private void initWidget() {
+        FrameLayout statusBar = (FrameLayout) findViewById(R.id.activity_settings_statusBar);
+        CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) statusBar.getLayoutParams();
+        params.height = getStatusBarHeight();
+        statusBar.setLayoutParams(params);
+        statusBar.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.activity_settings_toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_back);
         toolbar.setTitle(getString(R.string.nav_settings));
