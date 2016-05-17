@@ -47,11 +47,30 @@ public class FiltrateFragment extends RevealFragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_filtrate, container, false);
 
-        this.setColor(R.color.colorTextGrey2nd, R.color.cardview_light_background);
+        this.setColorSrc(R.color.colorTextGrey2nd, R.color.cardview_light_background);
         this.initWidget(view);
         revealView.setState(RevealView.REVEALING);
 
         return view;
+    }
+
+    @Override
+    public void hide() {
+        AnimatorSet backgroundOut = (AnimatorSet) AnimatorInflater.loadAnimator(getActivity(), R.animator.background_out);
+        backgroundOut.setTarget(background);
+        AnimatorSet viewOut = (AnimatorSet) AnimatorInflater.loadAnimator(getActivity(), R.animator.view_out);
+        viewOut.setTarget(infoContainer);
+        viewOut.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                revealView.setState(RevealView.GRADIENT_TO_REVEAL);
+            }
+        });
+
+        cardView.setCardElevation(0);
+        backgroundOut.start();
+        viewOut.start();
     }
 
     /** <br> UI. */
@@ -111,25 +130,6 @@ public class FiltrateFragment extends RevealFragment
                 return 6;
         }
         return 0;
-    }
-
-    @Override
-    public void hide() {
-        AnimatorSet backgroundOut = (AnimatorSet) AnimatorInflater.loadAnimator(getActivity(), R.animator.background_out);
-        backgroundOut.setTarget(background);
-        AnimatorSet viewOut = (AnimatorSet) AnimatorInflater.loadAnimator(getActivity(), R.animator.view_out);
-        viewOut.setTarget(infoContainer);
-        viewOut.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                super.onAnimationEnd(animation);
-                revealView.setState(RevealView.GRADIENT_TO_REVEAL);
-            }
-        });
-
-        cardView.setCardElevation(0);
-        backgroundOut.start();
-        viewOut.start();
     }
 
     /** <br> data. */

@@ -8,6 +8,7 @@ import android.app.FragmentTransaction;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
@@ -31,6 +32,7 @@ import com.wangdaye.waves.ui.widget.RevealView;
 public class SearchFragment extends RevealFragment
         implements RevealView.OnRevealingListener, View.OnClickListener, TextView.OnEditorActionListener {
     // widget
+    private CoordinatorLayout container;
     private RevealView revealView;
     private AppBarLayout appBarLayout;
     private EditText editText;
@@ -44,7 +46,7 @@ public class SearchFragment extends RevealFragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_search, container, false);
 
-        this.setColor(android.R.color.white, R.color.colorShadow);
+        this.setColorSrc(android.R.color.white, R.color.colorShadow);
         this.initWidget(view);
         revealView.setState(RevealView.REVEALING);
 
@@ -54,6 +56,8 @@ public class SearchFragment extends RevealFragment
     /** <br> UI. */
 
     private void initWidget(View view) {
+        this.container = (CoordinatorLayout) view.findViewById(R.id.fragment_search);
+
         float dpi = getResources().getDisplayMetrics().densityDpi;
         float x = (float) (getActivity().findViewById(R.id.container_main_container).getMeasuredWidth() - 62 * (dpi / 160.0));
 
@@ -85,12 +89,12 @@ public class SearchFragment extends RevealFragment
         inputMethodManager.hideSoftInputFromWindow(editText.getWindowToken(), 0);
 
         AnimatorSet viewOut = (AnimatorSet) AnimatorInflater.loadAnimator(getActivity(), R.animator.view_out);
-        viewOut.setTarget(appBarLayout);
+        viewOut.setTarget(container);
         viewOut.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
-                revealView.setState(RevealView.GRADIENT_TO_REVEAL);
+                hideFinish();
             }
         });
 

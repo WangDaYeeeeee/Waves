@@ -30,7 +30,7 @@
     </style>
     
     <!-- Toolbar -->
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />\
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Dark" />
 
     <!-- Text -->
@@ -125,22 +125,18 @@
         <item name="android:background">@android:color/transparent</item>
     </style>
 
-    <style name="material_button">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:textSize">@dimen/content_text_size</item>
-        <item name="android:textColor">?attr/root_background</item>
-        <item name="android:background">?attr/colorAccent</item>
-    </style>
-
-    <style name="about_button" parent="material_button">
+    <style name="about_button">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">36dp</item>
         <item name="android:layout_weight">1</item>
+        <item name="android:textColor">?attr/root_background</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">bold</item>
         <item name="android:layout_marginLeft">@dimen/card_margin</item>
         <item name="android:layout_marginRight">@dimen/card_margin</item>
         <item name="android:layout_marginBottom">@dimen/card_info_margin</item>
-        <item name="android:background">?attr/title_color</item>
+        <item name="android:background">@drawable/button_about</item>
+        <item name="android:foreground">?attr/selectableItemBackground</item>
     </style>
 
     <!-- image -->
@@ -148,6 +144,20 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_margin">@dimen/card_info_margin</item>
+    </style>
+
+    <style name="image_button">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:foreground">?attr/selectableItemBackground</item>
+    </style>
+
+    <style name="bottom_bar_button" parent="image_button">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:scaleType">center</item>
     </style>
 
 </resources>

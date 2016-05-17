@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group
+        android:id="@+id/fragment"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_dribbble"
+            android:title="@string/nav_home" />
+        <item
+            android:id="@+id/nav_myBuckets"
+            android:icon="@drawable/ic_inbox"
+            android:title="@string/nav_myBuckets" />
+        <item
+            android:id="@+id/nav_myLikes"
+            android:icon="@drawable/ic_heart_pulse"
+            android:title="@string/nav_myLikes" />
+        <item
+            android:id="@+id/nav_myShots"
+            android:icon="@drawable/ic_shot"
+            android:title="@string/nav_myShots" />
+    </group>
+
+    <group
+        android:id="@+id/about_Waves"
+        android:checkableBehavior="none">
+
+        <item
+            android:id="@+id/nav_settings"
+            android:icon="@drawable/ic_settings"
+            android:title="@string/settings" />
+        <item
+            android:id="@+id/nav_about"
+            android:icon="@drawable/ic_information"
+            android:title="@string/nav_about" />
+
+    </group>
+
+</menu>

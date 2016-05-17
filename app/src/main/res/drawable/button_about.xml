@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:tools="http://schemas.android.com/tools" xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- normal -->
+    <item tools:ignore="StateListReachable">
+        <shape>
+            <solid android:color="@color/colorAccent"/>
+            <corners android:radius="2dp" />
+        </shape>
+    </item>
+
+    <!-- pressed -->
+    <item android:state_pressed="true">
+        <shape>
+            <solid android:color="@color/colorAccent"/>
+            <corners android:radius="2dp" />
+        </shape>
+    </item>
+
+    <!-- focused -->
+    <item android:state_focused="true">
+        <shape>
+            <solid android:color="@color/colorAccent"/>
+            <corners android:radius="2dp" />
+        </shape>
+    </item>
+
+</selector>

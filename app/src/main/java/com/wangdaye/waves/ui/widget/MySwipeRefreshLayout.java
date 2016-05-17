@@ -16,7 +16,7 @@ import android.widget.RelativeLayout;
 public class MySwipeRefreshLayout extends RelativeLayout
         implements WavesLoadingView.OnLoadingListener {
     // widget
-    private HomeRecyclerView target;
+    private MyRecyclerView target;
     private WavesLoadingView wavesLoadingView;
 
     private OnRefreshListener onRefreshListener;
@@ -263,7 +263,7 @@ public class MySwipeRefreshLayout extends RelativeLayout
         if (!isLayout) {
             isLayout = true;
 
-            target = (HomeRecyclerView) getChildAt(0);
+            target = (MyRecyclerView) getChildAt(0);
             wavesLoadingView = (WavesLoadingView) getChildAt(1);
             wavesLoadingView.setOnLoadingListener(this);
 

@@ -1,9 +1,10 @@
 package com.wangdaye.waves.ui.fragment;
 
 import android.app.Fragment;
-import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Message;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.GridLayoutManager;
@@ -13,7 +14,9 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.wangdaye.waves.R;
@@ -22,9 +25,8 @@ import com.wangdaye.waves.data.dirbbble.tools.DribbbleService;
 import com.wangdaye.waves.data.item.ShotItem;
 import com.wangdaye.waves.data.dirbbble.model.Shot;
 import com.wangdaye.waves.ui.activity.MainActivity;
-import com.wangdaye.waves.ui.activity.ShotActivity;
 import com.wangdaye.waves.ui.widget.MyFloatingActionButton;
-import com.wangdaye.waves.ui.widget.HomeRecyclerView;
+import com.wangdaye.waves.ui.widget.MyRecyclerView;
 import com.wangdaye.waves.ui.widget.MySwipeRefreshLayout;
 import com.wangdaye.waves.utils.ImageUtils;
 import com.wangdaye.waves.utils.SafeHandler;
@@ -38,19 +40,18 @@ import java.util.TimerTask;
 import retrofit2.Call;
 import retrofit2.Response;
 
-
 /**
  * Home fragment
  * */
 
 public class HomeFragment extends Fragment
-        implements View.OnClickListener, ShotsAdapter.MyItemClickListener, HomeRecyclerView.OnLoadMoreListener,
+        implements View.OnClickListener, ShotsAdapter.MyItemClickListener, MyRecyclerView.OnLoadMoreListener,
         DribbbleService.GetShotsListener, MySwipeRefreshLayout.OnRefreshListener, Toolbar.OnMenuItemClickListener,
         FiltrateFragment.OnFiltrateListener, SearchFragment.OnSearchListener, SafeHandler.HandlerContainer {
     // widget
     private Toolbar toolbar;
     private MySwipeRefreshLayout swipeRefreshLayout;
-    private HomeRecyclerView recyclerView;
+    private MyRecyclerView recyclerView;
 
     private ShotsAdapter.LoadFinishCallback loadFinishCallback;
     private SafeHandler<HomeFragment> handler;
@@ -89,10 +90,16 @@ public class HomeFragment extends Fragment
     private void initWidget(View view) {
         this.handler = new SafeHandler<>(this);
 
+        FrameLayout statusBar = (FrameLayout) view.findViewById(R.id.fragment_home_statusBar);
+        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) statusBar.getLayoutParams();
+        params.height = ((MainActivity) getActivity()).getStatusBarHeight();
+        statusBar.setLayoutParams(params);
+        statusBar.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.colorPrimaryDark));
+
         this.toolbar = (Toolbar) view.findViewById(R.id.fragment_home_toolbar);
         toolbar.setTitle(getString(R.string.app_name));
         toolbar.setNavigationIcon(R.drawable.ic_burger_menu);
-        toolbar.inflateMenu(R.menu.menu_fragment_home);
+        toolbar.inflateMenu(R.menu.menu_home);
         toolbar.setNavigationOnClickListener(this);
         toolbar.setOnMenuItemClickListener(this);
         toolbar.setOnClickListener(this);
@@ -105,7 +112,7 @@ public class HomeFragment extends Fragment
         this.adapter = new ShotsAdapter(getActivity(), new ArrayList<ShotItem>());
         this.adapter.setOnItemClickListener(this);
 
-        this.recyclerView = (HomeRecyclerView) view.findViewById(R.id.fragment_home_recyclerView);
+        this.recyclerView = (MyRecyclerView) view.findViewById(R.id.fragment_home_recyclerView);
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
         recyclerView.setFab(fab);
         recyclerView.setOnMyOnScrollListener();
@@ -167,32 +174,21 @@ public class HomeFragment extends Fragment
     @Override
     public void onItemClick(View view, int position) {
         ShotItem shot = adapter.itemList.get(position);
-        Intent intent = new Intent(getActivity(), ShotActivity.class);
-        intent.putExtra(getString(R.string.key_shot_id), shot.shotId);
-        intent.putExtra(getString(R.string.key_image_uri), shot.imageUri);
-        intent.putExtra(getString(R.string.key_player_icon_uri), shot.playerIconUri);
-        intent.putExtra(getString(R.string.key_web_uri), shot.webUri);
-        intent.putExtra(getString(R.string.key_title), shot.title);
-        intent.putExtra(getString(R.string.key_sub_title), shot.subTitle);
-        intent.putExtra(getString(R.string.key_content), shot.content);
-        intent.putExtra(getString(R.string.key_likes), shot.likes);
-        intent.putExtra(getString(R.string.key_views), shot.views);
-        intent.putExtra(getString(R.string.key_buckets), shot.buckets);
-        Bundle values = new Bundle();
-        values.putStringArray(getString(R.string.key_tags), shot.tags);
-        intent.putExtra(getString(R.string.key_values), values);
-        intent.putExtra(getString(R.string.key_touch_x), recyclerView.touchX);
-        intent.putExtra(getString(R.string.key_touch_y), recyclerView.touchY);
         ImageView imageView = (ImageView) view.findViewById(R.id.item_shot_mini_image);
-        intent.putExtra(
-                getString(R.string.key_reveal_color),
-                ImageUtils.drawableToBitmap(imageView.getDrawable())
-                        .getPixel(
-                                (int) (recyclerView.touchX % imageView.getMeasuredWidth()),
-                                (int) (recyclerView.touchY % imageView.getMeasuredHeight())));
+        int x = (int) (recyclerView.touchX % imageView.getMeasuredWidth());
+        int y = (int) (recyclerView.touchY % imageView.getMeasuredHeight());
+        Bitmap bitmap = ImageUtils.drawableToBitmap(imageView.getDrawable());
 
-        startActivity(intent);
-        getActivity().overridePendingTransition(0, 0);
+        int revealColor;
+        if (x < bitmap.getWidth() && y < bitmap.getHeight()) {
+            revealColor = bitmap.getPixel(x, y);
+        } else {
+            revealColor = ContextCompat.getColor(getActivity(), R.color.colorRoot);
+        }
+
+        ShotFragment fragment = new ShotFragment();
+        fragment.setData(getActivity(), shot, revealColor, recyclerView.touchX, recyclerView.touchY);
+        ((MainActivity) getActivity()).insertFragment(fragment);
     }
 
     // on menu item click.

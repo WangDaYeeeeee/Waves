@@ -20,6 +20,6 @@
         android:background="?attr/card_background"
         app:headerLayout="@layout/container_nav_header"
         app:itemTextColor="?attr/title_color"
-        app:menu="@menu/activity_main_drawer" />
+        app:menu="@menu/drawer_main" />
 
 </android.support.v4.widget.DrawerLayout>

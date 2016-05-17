@@ -29,5 +29,6 @@
 
     <!-- other -->
     <dimen name="shot_title_container_height">80dp</dimen>
+    <dimen name="tag_button_height">36dp</dimen>
 
 </resources>

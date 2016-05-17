@@ -1,6 +1,8 @@
 package com.wangdaye.waves.ui.widget;
 
 import android.content.Context;
+import android.graphics.Canvas;
+import android.graphics.Color;
 import android.os.Message;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -23,12 +25,12 @@ public class SwipeBackLayout extends FrameLayout
     private View container;
     private View target;
     private View statusBar;
-    private View shadow;
     private OnSwipeListener onSwipeListener;
 
     // data
     private float swipeDownY;
     private float swipeUpY;
+    private float swipeLength;
     private float SWIPE_DIST = 200;
     private final float SWIPE_RADIO = 2.5F;
     private float touchSlop;
@@ -84,6 +86,8 @@ public class SwipeBackLayout extends FrameLayout
 
         this.handler = new SafeHandler<>(this);
         this.timer = new Timer();
+
+        this.setWillNotDraw(false);
     }
 
     /** <br> parent methods. */
@@ -210,7 +214,6 @@ public class SwipeBackLayout extends FrameLayout
                 if ((swipeDir == UP && swipeUpY >= SWIPE_DIST) || (swipeDir == DOWN && swipeDownY >= SWIPE_DIST)) {
                     swipeResult = SWIPE_FINISH;
                     statusBar.setVisibility(View.GONE);
-                    shadow.setVisibility(GONE);
                     this.swipeOver();
                 } else if (swipeDir != 0) {
                     swipeResult = SWIPE_CANCEL;
@@ -248,6 +251,12 @@ public class SwipeBackLayout extends FrameLayout
         }
     }
 
+    // draw.
+
+    protected void onDraw(Canvas canvas) {
+        canvas.drawColor(getShadowColor());
+    }
+
     /** <br> data */
 
     public void setState(int stateTo) {
@@ -259,16 +268,24 @@ public class SwipeBackLayout extends FrameLayout
     }
 
     private void setBackgroundAlpha(float swipeLength) {
-        if (statusBar == null || shadow == null) {
+        if (statusBar == null) {
             return;
         }
+        this.swipeLength = swipeLength;
         if (swipeLength < SWIPE_DIST) {
             statusBar.setAlpha((float) (1 - swipeLength * 1.0 / SWIPE_DIST));
-            shadow.setAlpha((float) (1 - swipeLength * 1.0 / SWIPE_DIST));
+            invalidate();
         } else {
             statusBar.setAlpha(0);
-            shadow.setAlpha(0);
+            invalidate();
         }
+    }
+
+    private int getShadowColor() {
+        if (swipeLength >= SWIPE_DIST) {
+            return Color.argb(0, 51, 51, 51);
+        }
+        return Color.argb((int) (255.0 * (1 - swipeLength / SWIPE_DIST)), 51, 51, 51);
     }
 
     /** <br> interface. */
@@ -286,9 +303,8 @@ public class SwipeBackLayout extends FrameLayout
 
     /** <br> setter. */
 
-    public void setBackground(View statusBar, View shadow) {
+    public void setBackground(View statusBar) {
         this.statusBar = statusBar;
-        this.shadow = shadow;
     }
 
     // handler.
@@ -306,7 +322,7 @@ public class SwipeBackLayout extends FrameLayout
                             (int) ((swipeUpY + swipeDownY + delta * sendMsgTime) * -swipeDir * 1.0),
                             getMeasuredWidth(),
                             (int) (getMeasuredHeight() + (swipeUpY + swipeDownY + delta * sendMsgTime) * -swipeDir * 1.0));
-                    setBackgroundAlpha(0);
+                    setBackgroundAlpha(SWIPE_DIST);
                     break;
 
                 case SWIPE_CANCEL:

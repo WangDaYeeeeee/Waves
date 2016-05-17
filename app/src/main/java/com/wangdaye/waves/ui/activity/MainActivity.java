@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -18,9 +17,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.MenuItem;
 import android.view.WindowManager;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -43,7 +40,6 @@ public class MainActivity extends ThemeActivity
         implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener,
         SafeHandler.HandlerContainer {
     // widget
-    private FrameLayout statusBar;
     private MyFloatingActionButton fab;
     private FragmentTransaction tempTransaction;
 
@@ -154,12 +150,6 @@ public class MainActivity extends ThemeActivity
     /** <br> UI. */
 
     private void initWidget() {
-        FrameLayout statusBar = (FrameLayout) findViewById(R.id.container_main_statusBar);
-        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) statusBar.getLayoutParams();
-        params.height = getStatusBarHeight();
-        statusBar.setLayoutParams(params);
-        statusBar.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
-
         this.initFab();
         this.initDrawer();
     }
@@ -379,13 +369,11 @@ public class MainActivity extends ThemeActivity
             case SETTINGS_ACTIVITY:
                 Intent settings = new Intent(MainActivity.this, SettingsActivity.class);
                 startActivityForResult(settings, SETTINGS_ACTIVITY);
-                overridePendingTransition(R.anim.activity_slide_in, 0);
                 break;
 
             case ABOUT_ACTIVITY:
                 Intent about = new Intent(MainActivity.this, AboutActivity.class);
                 startActivity(about);
-                overridePendingTransition(R.anim.activity_slide_in, 0);
                 break;
         }
     }

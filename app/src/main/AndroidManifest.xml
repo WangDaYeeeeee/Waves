@@ -24,10 +24,6 @@
         </activity>
 
         <activity
-            android:name=".ui.activity.ShotActivity"
-            android:theme="@style/WavesTheme.Translucent.Dribbble"/>
-
-        <activity
             android:name=".ui.activity.SettingsActivity"
             android:theme="@style/WavesTheme.Translucent" />
         <activity

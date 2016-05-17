@@ -2,7 +2,7 @@
 
     <!-- application -->
     <string name="app_name">Waves</string>
-    <string name="version_code">0.0.3</string>
+    <string name="version_code">0.0.4</string>
     <string name="powered">Powered by Dribbble.</string>
     <string name="author_name">wangdaye</string>
     <string name="my_email">wangdayeeeeee@gmail.com</string>
@@ -48,6 +48,7 @@
     <string name="download_success">下载成功</string>
     <string name="no_data">无数据</string>
     <string name="no_comments">无评论</string>
+    <string name="check_all">查看所有</string>
 
     <!-- nav item -->
     <string name="nav_home">Explore</string>

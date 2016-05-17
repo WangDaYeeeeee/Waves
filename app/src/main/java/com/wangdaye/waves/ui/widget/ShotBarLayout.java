@@ -42,7 +42,7 @@ public class ShotBarLayout extends AppBarLayout {
 
         if (!isLayout) {
             isLayout = true;
-            this.shot = (ImageView) getChildAt(1);
+            this.shot = (ImageView) getChildAt(0);
         }
     }
 

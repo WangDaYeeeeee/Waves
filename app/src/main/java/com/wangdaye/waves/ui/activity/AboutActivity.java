@@ -94,9 +94,7 @@ public class AboutActivity extends ThemeActivity
     private void initWidget() {
         SwipeBackLayout swipeBackLayout = (SwipeBackLayout) findViewById(R.id.activity_about_swipeBackLayout);
         assert swipeBackLayout != null;
-        swipeBackLayout.setBackground(
-                findViewById(R.id.activity_about_statusBar),
-                findViewById(R.id.activity_about_shadow));
+        swipeBackLayout.setBackground(findViewById(R.id.activity_about_statusBar));
         swipeBackLayout.setOnSwipeListener(this,
                 findViewById(R.id.activity_about_scrollView),
                 findViewById(R.id.activity_about_container));
