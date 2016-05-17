@@ -1,7 +1,6 @@
 package com.wangdaye.waves.ui.activity;
 
 import android.app.Fragment;
-import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -24,6 +23,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.util.Util;
 import com.wangdaye.waves.R;
+import com.wangdaye.waves.data.dirbbble.tools.DribbbleService;
 import com.wangdaye.waves.ui.fragment.HomeFragment;
 import com.wangdaye.waves.ui.widget.RevealFragment;
 import com.wangdaye.waves.ui.widget.MyFloatingActionButton;
@@ -44,11 +44,12 @@ public class MainActivity extends ThemeActivity
     private FragmentTransaction tempTransaction;
 
     // data
+    private DribbbleService dribbbleService;
     private String sort;
     private String list;
 
     private int fragmentNow;
-    private List<Fragment> fragmentList;
+    public List<Fragment> fragmentList;
     private boolean started;
 
     private final int HOME_FRAGMENT = 1;
@@ -66,7 +67,7 @@ public class MainActivity extends ThemeActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.readSettings();
+        this.initData();
         this.setStatusBarTransparent();
         setContentView(R.layout.activity_main);
     }
@@ -90,6 +91,7 @@ public class MainActivity extends ThemeActivity
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        handler.removeCallbacksAndMessages(null);
         if(Util.isOnMainThread()) {
             Glide.get(this).clearMemory();
         }
@@ -205,7 +207,9 @@ public class MainActivity extends ThemeActivity
 
     /** <br> data. */
 
-    private void readSettings() {
+    private void initData() {
+        this.dribbbleService = new DribbbleService();
+
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         this.sort = sharedPreferences.getString(getString(R.string.key_shots_sort), getString(R.string.default_shots_sort));
         this.list = sharedPreferences.getString(getString(R.string.key_shots_list), getString(R.string.default_shots_list));
@@ -221,6 +225,10 @@ public class MainActivity extends ThemeActivity
         };
     }
 
+    public DribbbleService getDribbbleService() {
+        return this.dribbbleService;
+    }
+
     /** <br> fragment. */
 
     private void changeFragment(int fragmentTo, boolean init) {
@@ -228,10 +236,17 @@ public class MainActivity extends ThemeActivity
             return;
         }
 
+        for (Fragment f : fragmentList) {
+            getFragmentManager()
+                    .beginTransaction()
+                    .remove(f)
+                    .commit();
+        }
+        fragmentList.clear();
+
         this.fragmentNow = fragmentTo;
 
-        FragmentManager fragmentManager = getFragmentManager();
-        final FragmentTransaction transaction = fragmentManager.beginTransaction();
+        final FragmentTransaction transaction = getFragmentManager().beginTransaction();
         Fragment newFragment;
         NavigationView navView = (NavigationView) findViewById(R.id.activity_main_navView);
         switch (fragmentTo) {
@@ -249,9 +264,7 @@ public class MainActivity extends ThemeActivity
                 break;
         }
 
-        fragmentList.clear();
-        fragmentList.add(0, newFragment);
-
+        fragmentList.add(newFragment);
         transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         transaction.replace(R.id.container_main_container, newFragment);
 
@@ -277,7 +290,7 @@ public class MainActivity extends ThemeActivity
 
         fragmentList.add(fragment);
         transaction.add(R.id.container_main_container, fragment);
-        transaction.addToBackStack("FiltrateFragment");
+        transaction.addToBackStack("RevealFragment");
         transaction.commit();
     }
 

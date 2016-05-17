@@ -347,6 +347,7 @@ public class SwipeBackLayout extends FrameLayout
             if (swipeResult == SWIPE_FINISH && onSwipeListener != null) {
                 container.setVisibility(GONE);
                 onSwipeListener.swipeFinish();
+                handler.removeCallbacksAndMessages(null);
             }
         }
     }

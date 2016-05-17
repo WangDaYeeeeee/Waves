@@ -21,10 +21,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Dribbble service.
  * */
 
-public enum DribbbleService {
-
-    instance;
-
+public class DribbbleService {
     // widget
     private List<DataLoadingSubject.DataLoadingCallbacks> loadingCallbacks;
 

@@ -1,8 +1,6 @@
 package com.wangdaye.waves.ui.widget;
 
-import android.animation.Animator;
 import android.animation.AnimatorInflater;
-import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.content.Context;
 import android.support.design.widget.FloatingActionButton;
@@ -57,12 +55,6 @@ public class MyFloatingActionButton extends FloatingActionButton {
             showing = false;
             AnimatorSet fabHide = (AnimatorSet) AnimatorInflater.loadAnimator(getContext(), R.animator.fab_hide);
             fabHide.setTarget(this);
-            fabHide.addListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    super.onAnimationEnd(animation);
-                }
-            });
             fabHide.start();
         }
     }

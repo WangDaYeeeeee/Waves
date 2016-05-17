@@ -40,6 +40,7 @@ import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.target.Target;
 import com.bumptech.glide.util.Util;
+import com.squareup.leakcanary.RefWatcher;
 import com.wangdaye.waves.R;
 import com.wangdaye.waves.application.Waves;
 import com.wangdaye.waves.data.dirbbble.model.Comment;
@@ -121,7 +122,9 @@ public class ShotFragment extends RevealFragment
         }
         revealView.setState(RevealView.REVEALING);
         wavesLoadingView.setState(WavesLoadingView.SHOWING);
-        DribbbleService.instance.getDribbbleComments(shotItem.shotId, this);
+        ((MainActivity) getActivity())
+                .getDribbbleService()
+                .getDribbbleComments(shotItem.shotId, this);
         return view;
     }
 
@@ -129,6 +132,16 @@ public class ShotFragment extends RevealFragment
     public void hide() {
         fab.hide();
         finish();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        RefWatcher refWatcher = Waves.getRefWatcher(getActivity());
+        refWatcher.watch(this);
+        if(Util.isOnMainThread()) {
+            Glide.get(getActivity()).clearMemory();
+        }
     }
 
     private void finish() {
@@ -329,6 +342,7 @@ public class ShotFragment extends RevealFragment
 
     @Override
     public void swipeFinish() {
+        ((MainActivity) getActivity()).fragmentList.remove(((MainActivity) getActivity()).fragmentList.size() - 1);
         this.finish();
     }
 
@@ -453,7 +467,9 @@ public class ShotFragment extends RevealFragment
             @Override
             public void onClick(View v) {
                 wavesLoadingView.setState(WavesLoadingView.SHOWING);
-                DribbbleService.instance.getDribbbleComments(shotItem.shotId, ShotFragment.this);
+                ((MainActivity) getActivity())
+                        .getDribbbleService()
+                        .getDribbbleComments(shotItem.shotId, ShotFragment.this);
                 wavesLoadingView.setOnClickListener(null);
             }
         });

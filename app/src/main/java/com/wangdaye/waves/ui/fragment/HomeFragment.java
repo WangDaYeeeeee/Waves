@@ -72,7 +72,9 @@ public class HomeFragment extends Fragment
 
         this.initData();
         this.initWidget(view);
-        DribbbleService.instance.getDribbbleShots(shotSort, shotList, 1, false, this);
+        ((MainActivity) getActivity())
+                .getDribbbleService()
+                .getDribbbleShots(shotSort, shotList, 1, false, this);
 
         new Timer().schedule(new TimerTask() {
             @Override
@@ -83,6 +85,12 @@ public class HomeFragment extends Fragment
             }
         }, 10);
         return view;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        handler.removeCallbacksAndMessages(null);
     }
 
     /** <br> UI. */
@@ -229,7 +237,9 @@ public class HomeFragment extends Fragment
 
     @Override
     public void onLoadMore() {
-        DribbbleService.instance.getDribbbleShots(shotSort, shotList, ++ page, true, this);
+        ((MainActivity) getActivity())
+                .getDribbbleService()
+                .getDribbbleShots(shotSort, shotList, ++ page, true, this);
     }
 
     // my swipe refresh layout listener.
@@ -237,18 +247,26 @@ public class HomeFragment extends Fragment
     @Override
     public void refreshNew() {
         if (isSearching) {
-            DribbbleService.instance.searchDribbbleShots(text, shotSort, 1, false, this);
+            ((MainActivity) getActivity())
+                    .getDribbbleService()
+                    .searchDribbbleShots(text, shotSort, 1, false, this);
         } else {
-            DribbbleService.instance.getDribbbleShots(shotSort, shotList, 1, false, this);
+            ((MainActivity) getActivity())
+                    .getDribbbleService()
+                    .getDribbbleShots(shotSort, shotList, 1, false, this);
         }
     }
 
     @Override
     public void loadMore() {
         if (isSearching) {
-            DribbbleService.instance.searchDribbbleShots(text, shotSort, ++ page, true, this);
+            ((MainActivity) getActivity())
+                    .getDribbbleService()
+                    .searchDribbbleShots(text, shotSort, ++ page, true, this);
         } else {
-            DribbbleService.instance.getDribbbleShots(shotSort, shotList, ++ page, true, this);
+            ((MainActivity) getActivity())
+                    .getDribbbleService()
+                    .getDribbbleShots(shotSort, shotList, ++ page, true, this);
         }
     }
 
