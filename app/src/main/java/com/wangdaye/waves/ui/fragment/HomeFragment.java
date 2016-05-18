@@ -237,9 +237,15 @@ public class HomeFragment extends Fragment
 
     @Override
     public void onLoadMore() {
-        ((MainActivity) getActivity())
-                .getDribbbleService()
-                .getDribbbleShots(shotSort, shotList, ++ page, true, this);
+        if (isSearching) {
+            ((MainActivity) getActivity())
+                    .getDribbbleService()
+                    .searchDribbbleShots(text, shotSort, ++ page, true, this);
+        } else {
+            ((MainActivity) getActivity())
+                    .getDribbbleService()
+                    .getDribbbleShots(shotSort, shotList, ++ page, true, this);
+        }
     }
 
     // my swipe refresh layout listener.
@@ -259,15 +265,7 @@ public class HomeFragment extends Fragment
 
     @Override
     public void loadMore() {
-        if (isSearching) {
-            ((MainActivity) getActivity())
-                    .getDribbbleService()
-                    .searchDribbbleShots(text, shotSort, ++ page, true, this);
-        } else {
-            ((MainActivity) getActivity())
-                    .getDribbbleService()
-                    .getDribbbleShots(shotSort, shotList, ++ page, true, this);
-        }
+        this.onLoadMore();
     }
 
     // on search listener.
