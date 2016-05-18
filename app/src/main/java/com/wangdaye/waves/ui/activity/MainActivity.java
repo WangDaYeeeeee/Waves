@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -290,20 +291,26 @@ public class MainActivity extends ThemeActivity
 
         fragmentList.add(fragment);
         transaction.add(R.id.container_main_container, fragment);
-        transaction.addToBackStack("RevealFragment");
+        transaction.addToBackStack(null);
         transaction.commit();
     }
 
     public void removeFragment() {
         if (fragmentList.get(fragmentList.size() - 1) instanceof RevealFragment) {
             ((RevealFragment) fragmentList.get(fragmentList.size() - 1)).hide();
-            fragmentList.remove(fragmentList.size() - 1);
+            this.popFragmentList();
         } else {
-            FragmentTransaction transaction = getFragmentManager().beginTransaction();
-            transaction.remove(fragmentList.get(fragmentList.size() - 1));
-            fragmentList.remove(fragmentList.size() - 1);
-            transaction.commit();
+            this.popFragment();
+            this.popFragmentList();
         }
+    }
+
+    public void popFragment() {
+        getFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+    }
+
+    public void popFragmentList() {
+        fragmentList.remove(fragmentList.size() - 1);
     }
 
     /** <br> parent method. */

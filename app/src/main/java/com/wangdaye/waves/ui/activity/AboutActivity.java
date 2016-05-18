@@ -257,7 +257,6 @@ public class AboutActivity extends ThemeActivity
     @Override
     public void swipeFinish() {
         finish();
-        overridePendingTransition(0, R.anim.activity_slide_out);
     }
 
     // glide request listener.

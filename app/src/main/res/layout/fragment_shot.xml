@@ -53,7 +53,7 @@
             android:layout_height="match_parent"
             android:paddingTop="256dp"
             android:clipToPadding="false"
-            android:scrollbars="none"
+            android:visibility="gone"
             tools:visibility="visible">
 
             <include layout="@layout/container_shot" />

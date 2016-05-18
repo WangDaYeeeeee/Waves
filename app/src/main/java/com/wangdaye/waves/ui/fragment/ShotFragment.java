@@ -1,12 +1,7 @@
 package com.wangdaye.waves.ui.fragment;
 
 import android.Manifest;
-import android.animation.Animator;
-import android.animation.AnimatorInflater;
-import android.animation.AnimatorListenerAdapter;
-import android.animation.AnimatorSet;
 import android.annotation.SuppressLint;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -16,7 +11,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.AppBarLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.view.ContextThemeWrapper;
@@ -26,9 +20,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,7 +35,6 @@ import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.target.Target;
 import com.bumptech.glide.util.Util;
-import com.squareup.leakcanary.RefWatcher;
 import com.wangdaye.waves.R;
 import com.wangdaye.waves.application.Waves;
 import com.wangdaye.waves.data.dirbbble.model.Comment;
@@ -78,6 +72,7 @@ public class ShotFragment extends RevealFragment
         implements SwipeBackLayout.OnSwipeListener, View.OnClickListener, RevealView.OnRevealingListener,
         DribbbleService.GetCommentsListener, CommentsAdapter.MyItemClickListener {
     // widget
+    private SwipeBackLayout swipeBackLayout;
     private ShotScrollParent scrollParent;
 
     private ShotBarLayout shotBar;
@@ -86,10 +81,7 @@ public class ShotFragment extends RevealFragment
 
     private ShotScrollView scrollView;
 
-    private RelativeLayout titleContainer;
     private CircleImageView playerIcon;
-
-    private AppBarLayout dataContainer;
     private TextView likesNum;
 
     private MyFloatingActionButton fab;
@@ -131,25 +123,20 @@ public class ShotFragment extends RevealFragment
     @Override
     public void hide() {
         fab.hide();
-        finish();
+        Animation viewOut = AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_out);
+        viewOut.setAnimationListener(new ViewOutListener());
+        swipeBackLayout.startAnimation(viewOut);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        RefWatcher refWatcher = Waves.getRefWatcher(getActivity());
-        refWatcher.watch(this);
         if(Util.isOnMainThread()) {
             Glide.get(getActivity()).clearMemory();
         }
     }
 
     private void finish() {
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE);
-        transaction.remove(this);
-        transaction.commit();
-
         MainActivity container = (MainActivity) getActivity();
         container.setStatusBarTransparent();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
@@ -159,12 +146,13 @@ public class ShotFragment extends RevealFragment
         if (fab != null) {
             fab.show();
         }
+        container.popFragment();
     }
 
     /** <br> UI. */
 
     private void initWidget(View view) {
-        SwipeBackLayout swipeBackLayout = (SwipeBackLayout) view.findViewById(R.id.fragment_shot_swipeBackLayout);
+        this.swipeBackLayout = (SwipeBackLayout) view.findViewById(R.id.fragment_shot_swipeBackLayout);
         swipeBackLayout.setBackground(view.findViewById(R.id.fragment_shot_statusBar));
         swipeBackLayout.setOnSwipeListener(this,
                 view.findViewById(R.id.fragment_shot_scrollView),
@@ -217,8 +205,6 @@ public class ShotFragment extends RevealFragment
     }
 
     private void initTitlePart(View view) {
-        this.titleContainer = (RelativeLayout) view.findViewById(R.id.container_shot_title_container);
-
         this.playerIcon = (CircleImageView) view.findViewById(R.id.container_shot_player);
 
         TextView title = (TextView) view.findViewById(R.id.container_shot_title);
@@ -231,8 +217,6 @@ public class ShotFragment extends RevealFragment
 
     @SuppressLint("SetTextI18n")
     private void initDataPart(View view) {
-        this.dataContainer = (AppBarLayout) view.findViewById(R.id.container_shot_data_container);
-
         HtmlTextView content = (HtmlTextView) view.findViewById(R.id.container_shot_content);
         content.setHtmlFromString(
                 shotItem.content,
@@ -342,7 +326,7 @@ public class ShotFragment extends RevealFragment
 
     @Override
     public void swipeFinish() {
-        ((MainActivity) getActivity()).fragmentList.remove(((MainActivity) getActivity()).fragmentList.size() - 1);
+        ((MainActivity) getActivity()).popFragmentList();
         this.finish();
     }
 
@@ -380,57 +364,20 @@ public class ShotFragment extends RevealFragment
 
     @Override
     public void revealFinish() {
-        final AnimatorSet[] viewIn = new AnimatorSet[] {
-                (AnimatorSet) AnimatorInflater.loadAnimator(getActivity(), R.animator.view_in_1),
-                (AnimatorSet) AnimatorInflater.loadAnimator(getActivity(), R.animator.view_in_1),
-                (AnimatorSet) AnimatorInflater.loadAnimator(getActivity(), R.animator.view_in_2)
+        Animation[] viewIn = new Animation[] {
+                AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_in),
+                AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_in)
         };
-        viewIn[0].setTarget(shotBar);
-        viewIn[1].setTarget(titleContainer);
-        viewIn[2].setTarget(dataContainer);
-
-        viewIn[0].addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                super.onAnimationEnd(animation);
-                titleContainer.setVisibility(View.VISIBLE);
-                viewIn[1].start();
-            }
-        });
-        viewIn[1].addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                super.onAnimationEnd(animation);
-                dataContainer.setVisibility(View.VISIBLE);
-                viewIn[2].start();
-                fab.setVisibility(View.VISIBLE);
-                fab.show();
-            }
-        });
-        viewIn[2].addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                super.onAnimationEnd(animation);
-
-                if(Util.isOnMainThread()) {
-                    Glide.with(getActivity()) // shot.
-                            .load(shotItem.imageUri)
-                            .crossFade(300)
-                            .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                            .listener(palette)
-                            .into(shotImage);
-                    Glide.with(getActivity()) // icon.
-                            .load(shotItem.imageUri)
-                            .crossFade(300)
-                            .diskCacheStrategy(DiskCacheStrategy.NONE)
-                            .into(playerIcon);
-                }
-            }
-        });
+        viewIn[1].setAnimationListener(new ViewInListener());
 
         this.initShotBar(shotBar.getMaxiHeight());
+
+        fab.setVisibility(View.VISIBLE);
+        fab.show();
         shotBar.setVisibility(View.VISIBLE);
-        viewIn[0].start();
+        shotBar.startAnimation(viewIn[0]);
+        scrollView.setVisibility(View.VISIBLE);
+        scrollView.startAnimation(viewIn[1]);
     }
 
     @Override
@@ -473,6 +420,56 @@ public class ShotFragment extends RevealFragment
                 wavesLoadingView.setOnClickListener(null);
             }
         });
+    }
+
+    // animation listener.
+
+    private class ViewInListener implements Animation.AnimationListener {
+
+        @Override
+        public void onAnimationStart(Animation animation) {
+
+        }
+
+        @Override
+        public void onAnimationEnd(Animation animation) {
+            if(Util.isOnMainThread()) {
+                Glide.with(getActivity()) // shot.
+                        .load(shotItem.imageUri)
+                        .crossFade(300)
+                        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                        .listener(palette)
+                        .into(shotImage);
+                Glide.with(getActivity()) // icon.
+                        .load(shotItem.imageUri)
+                        .crossFade(300)
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .into(playerIcon);
+            }
+        }
+
+        @Override
+        public void onAnimationRepeat(Animation animation) {
+
+        }
+    }
+
+    private class ViewOutListener implements Animation.AnimationListener {
+
+        @Override
+        public void onAnimationStart(Animation animation) {
+
+        }
+
+        @Override
+        public void onAnimationEnd(Animation animation) {
+            hideFinish();
+        }
+
+        @Override
+        public void onAnimationRepeat(Animation animation) {
+
+        }
     }
 
     // glide request listener.

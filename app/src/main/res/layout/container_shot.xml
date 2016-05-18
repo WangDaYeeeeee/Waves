@@ -11,9 +11,7 @@
         android:id="@+id/container_shot_title_container"
         android:layout_width="match_parent"
         android:layout_height="@dimen/shot_title_container_height"
-        android:background="?attr/sub_root_background"
-        android:visibility="gone"
-        tools:visibility="visible">
+        android:background="?attr/sub_root_background">
 
         <com.wangdaye.waves.ui.widget.CircleImageView
             android:id="@+id/container_shot_player"
@@ -56,9 +54,7 @@
         android:id="@+id/container_shot_data_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/root_background"
-        android:visibility="gone"
-        tools:visibility="visible">
+        android:background="?attr/root_background">
 
         <org.sufficientlysecure.htmltextview.HtmlTextView
             android:id="@+id/container_shot_content"

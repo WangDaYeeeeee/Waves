@@ -78,7 +78,6 @@ public class SettingsActivity extends ThemeActivity
         switch (v.getId()) {
             case -1:
                 finish();
-                overridePendingTransition(0, R.anim.activity_slide_out);
         }
     }
 }

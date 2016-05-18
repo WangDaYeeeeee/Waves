@@ -1,10 +1,5 @@
 package com.wangdaye.waves.ui.fragment;
 
-import android.animation.Animator;
-import android.animation.AnimatorInflater;
-import android.animation.AnimatorListenerAdapter;
-import android.animation.AnimatorSet;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
@@ -15,6 +10,8 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -88,17 +85,9 @@ public class SearchFragment extends RevealFragment
         InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(editText.getWindowToken(), 0);
 
-        AnimatorSet viewOut = (AnimatorSet) AnimatorInflater.loadAnimator(getActivity(), R.animator.view_out);
-        viewOut.setTarget(container);
-        viewOut.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                super.onAnimationEnd(animation);
-                hideFinish();
-            }
-        });
-
-        viewOut.start();
+        Animation viewOut = AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_out);
+        viewOut.setAnimationListener(new ViewOutListener());
+        container.startAnimation(viewOut);
     }
 
     /** <br> data. */
@@ -144,30 +133,58 @@ public class SearchFragment extends RevealFragment
 
     @Override
     public void revealFinish() {
-        AnimatorSet viewIn = (AnimatorSet) AnimatorInflater.loadAnimator(getActivity(), R.animator.view_in_1);
-        viewIn.setTarget(appBarLayout);
-        viewIn.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                super.onAnimationEnd(animation);
-                InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                inputMethodManager.showSoftInput(editText, 0);
-            }
-        });
+        Animation viewIn = AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_in);
+        viewIn.setAnimationListener(new ViewInListener());
         appBarLayout.setVisibility(View.VISIBLE);
-        viewIn.start();
+        appBarLayout.startAnimation(viewIn);
     }
 
     @Override
     public void hideFinish() {
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.remove(this);
-        transaction.commit();
-
         MainActivity container = (MainActivity) getActivity();
         MyFloatingActionButton fab = (MyFloatingActionButton) container.findViewById(R.id.container_main_fab);
         if (fab != null) {
             fab.show();
+        }
+        container.popFragment();
+    }
+
+    // animation listener.
+
+    private class ViewInListener implements Animation.AnimationListener {
+
+        @Override
+        public void onAnimationStart(Animation animation) {
+
+        }
+
+        @Override
+        public void onAnimationEnd(Animation animation) {
+            InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            inputMethodManager.showSoftInput(editText, 0);
+        }
+
+        @Override
+        public void onAnimationRepeat(Animation animation) {
+
+        }
+    }
+
+    private class ViewOutListener implements Animation.AnimationListener {
+
+        @Override
+        public void onAnimationStart(Animation animation) {
+
+        }
+
+        @Override
+        public void onAnimationEnd(Animation animation) {
+            hideFinish();
+        }
+
+        @Override
+        public void onAnimationRepeat(Animation animation) {
+
         }
     }
 

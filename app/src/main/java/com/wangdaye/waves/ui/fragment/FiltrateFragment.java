@@ -1,16 +1,15 @@
 package com.wangdaye.waves.ui.fragment;
 
-import android.animation.Animator;
 import android.animation.AnimatorInflater;
-import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
-import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -58,19 +57,13 @@ public class FiltrateFragment extends RevealFragment
     public void hide() {
         AnimatorSet backgroundOut = (AnimatorSet) AnimatorInflater.loadAnimator(getActivity(), R.animator.background_out);
         backgroundOut.setTarget(background);
-        AnimatorSet viewOut = (AnimatorSet) AnimatorInflater.loadAnimator(getActivity(), R.animator.view_out);
-        viewOut.setTarget(infoContainer);
-        viewOut.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                super.onAnimationEnd(animation);
-                revealView.setState(RevealView.GRADIENT_TO_REVEAL);
-            }
-        });
+
+        Animation viewOut = AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_out);
+        viewOut.setAnimationListener(new viewOutListener());
 
         cardView.setCardElevation(0);
         backgroundOut.start();
-        viewOut.start();
+        infoContainer.startAnimation(viewOut);
     }
 
     /** <br> UI. */
@@ -222,26 +215,43 @@ public class FiltrateFragment extends RevealFragment
     public void revealFinish() {
         AnimatorSet backgroundIn = (AnimatorSet) AnimatorInflater.loadAnimator(getActivity(), R.animator.background_in);
         backgroundIn.setTarget(background);
-        AnimatorSet viewIn = (AnimatorSet) AnimatorInflater.loadAnimator(getActivity(), R.animator.view_in_1);
-        viewIn.setTarget(infoContainer);
+        Animation viewIn = AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_in);
 
         cardView.setCardElevation(10);
         infoContainer.setVisibility(View.VISIBLE);
         background.setVisibility(View.VISIBLE);
         backgroundIn.start();
-        viewIn.start();
+        infoContainer.startAnimation(viewIn);
     }
 
     @Override
     public void hideFinish() {
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.remove(this);
-        transaction.commit();
-
         MainActivity container = (MainActivity) getActivity();
         MyFloatingActionButton fab = (MyFloatingActionButton) container.findViewById(R.id.container_main_fab);
         if (fab != null) {
             fab.show();
+        }
+        container.popFragment();
+    }
+
+    // animation listener.
+
+    private class viewOutListener implements Animation.AnimationListener {
+
+        @Override
+        public void onAnimationStart(Animation animation) {
+
+        }
+
+        @Override
+        public void onAnimationEnd(Animation animation) {
+            infoContainer.setVisibility(View.GONE);
+            revealView.setState(RevealView.GRADIENT_TO_REVEAL);
+        }
+
+        @Override
+        public void onAnimationRepeat(Animation animation) {
+
         }
     }
 
