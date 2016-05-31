@@ -64,76 +64,37 @@
                         style="@style/doneButton"
                         tools:ignore="RtlHardcoded" />
 
-                    <LinearLayout
-                        android:orientation="vertical"
+                    <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_below="@id/fragment_filtrate_title"
                         android:layout_above="@id/fragment_filtrate_doneButton">
 
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="1">
+                        <TextView
+                            android:id="@+id/fragment_filtrate_listTitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="@dimen/title_text_size"
+                            android:textColor="@color/colorTextDark2nd"
+                            android:text="@string/list"
+                            android:layout_margin="@dimen/card_info_margin"
+                            android:layout_alignParentLeft="true"
+                            android:layout_centerVertical="true"
+                            tools:ignore="RelativeOverlap,RtlHardcoded" />
 
-                            <TextView
-                                android:id="@+id/fragment_filtrate_sortTitle"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textSize="@dimen/title_text_size"
-                                android:textColor="@color/colorTextDark2nd"
-                                android:text="@string/sort"
-                                android:layout_margin="@dimen/card_info_margin"
-                                android:layout_alignParentLeft="true"
-                                android:layout_centerVertical="true"
-                                tools:ignore="RelativeOverlap,RtlHardcoded" />
+                        <Spinner
+                            android:id="@+id/fragment_filtrate_listSpinner"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/card_info_margin"
+                            android:layout_marginRight="@dimen/card_info_margin"
+                            android:layout_alignParentRight="true"
+                            android:layout_toRightOf="@id/fragment_filtrate_listTitle"
+                            android:layout_centerVertical="true"
+                            android:entries="@array/shots_list"
+                            tools:ignore="RtlHardcoded" />
 
-                            <Spinner
-                                android:id="@+id/fragment_filtrate_sortSpinner"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="@dimen/card_info_margin"
-                                android:layout_marginRight="@dimen/card_info_margin"
-                                android:layout_alignParentRight="true"
-                                android:layout_toRightOf="@id/fragment_filtrate_sortTitle"
-                                android:layout_centerVertical="true"
-                                android:entries="@array/shots_sort"
-                                tools:ignore="RtlHardcoded" />
-
-                        </RelativeLayout>
-
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="1">
-
-                            <TextView
-                                android:id="@+id/fragment_filtrate_listTitle"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textSize="@dimen/title_text_size"
-                                android:textColor="@color/colorTextDark2nd"
-                                android:text="@string/list"
-                                android:layout_margin="@dimen/card_info_margin"
-                                android:layout_alignParentLeft="true"
-                                android:layout_centerVertical="true"
-                                tools:ignore="RelativeOverlap,RtlHardcoded" />
-
-                            <Spinner
-                                android:id="@+id/fragment_filtrate_listSpinner"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="@dimen/card_info_margin"
-                                android:layout_marginRight="@dimen/card_info_margin"
-                                android:layout_alignParentRight="true"
-                                android:layout_toRightOf="@id/fragment_filtrate_listTitle"
-                                android:layout_centerVertical="true"
-                                android:entries="@array/shots_list"
-                                tools:ignore="RtlHardcoded" />
-
-                        </RelativeLayout>
-
-                    </LinearLayout>
+                    </RelativeLayout>
 
                 </RelativeLayout>
 

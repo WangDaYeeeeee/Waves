@@ -1,4 +1,4 @@
-package com.wangdaye.waves.ui.widget;
+package com.wangdaye.waves.ui.widget.nestedScroll;
 
 import android.content.Context;
 import android.support.design.widget.AppBarLayout;

@@ -1,7 +1,6 @@
-package com.wangdaye.waves.ui.widget;
+package com.wangdaye.waves.ui.widget.container;
 
 import android.app.ActivityManager;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Build;
@@ -43,17 +42,5 @@ public abstract class ThemeActivity extends AppCompatActivity {
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             window.setStatusBarColor(Color.TRANSPARENT);
         }
-    }
-
-    public int getStatusBarHeight() {
-        Resources resources = getResources();
-        int resourceId = resources.getIdentifier("status_bar_height", "dimen","android");
-        return resources.getDimensionPixelSize(resourceId);
-    }
-
-    public int getNavigationBarHeight() {
-        Resources resources = getResources();
-        int resourceId = resources.getIdentifier("navigation_bar_height", "dimen", "android");
-        return resources.getDimensionPixelSize(resourceId);
     }
 }

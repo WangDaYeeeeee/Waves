@@ -1,4 +1,4 @@
-package com.wangdaye.waves.ui.widget;
+package com.wangdaye.waves.ui.widget.nestedScroll;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -6,6 +6,8 @@ import android.os.Build;
 import android.support.v4.widget.NestedScrollView;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
+
+import com.wangdaye.waves.ui.widget.MyFloatingActionButton;
 
 /**
  * Shot scroll parent.

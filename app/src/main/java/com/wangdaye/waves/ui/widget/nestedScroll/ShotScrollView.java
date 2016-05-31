@@ -1,10 +1,12 @@
-package com.wangdaye.waves.ui.widget;
+package com.wangdaye.waves.ui.widget.nestedScroll;
 
 import android.content.Context;
 import android.support.v4.widget.NestedScrollView;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.ViewConfiguration;
+
+import com.wangdaye.waves.utils.DisplayUtils;
 
 /**
  * Shot scroll view.
@@ -37,7 +39,7 @@ public class ShotScrollView extends NestedScrollView {
 
     private void initialize() {
         this.scrollLength = 0;
-        this.BOOST_LENGTH = (float) (80.0 * (getResources().getDisplayMetrics().densityDpi / 160.0));
+        this.BOOST_LENGTH = DisplayUtils.dpToPx(80);
 
         this.touchSlop = ViewConfiguration.get(getContext()).getScaledTouchSlop();
     }

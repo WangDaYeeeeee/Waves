@@ -7,13 +7,11 @@ import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -25,12 +23,15 @@ import com.bumptech.glide.request.target.Target;
 import com.wangdaye.waves.R;
 import com.wangdaye.waves.data.item.OpenSourceItem;
 import com.wangdaye.waves.ui.adapter.OpenSourceAdapter;
-import com.wangdaye.waves.ui.widget.ShotBarLayout;
-import com.wangdaye.waves.ui.widget.ShotScrollParent;
-import com.wangdaye.waves.ui.widget.ShotScrollView;
+import com.wangdaye.waves.ui.widget.nestedScroll.ShotBarLayout;
+import com.wangdaye.waves.ui.widget.nestedScroll.ShotScrollParent;
+import com.wangdaye.waves.ui.widget.nestedScroll.ShotScrollView;
+import com.wangdaye.waves.ui.widget.imageView.ShotView;
+import com.wangdaye.waves.ui.widget.StatusBarView;
 import com.wangdaye.waves.ui.widget.SwipeBackLayout;
-import com.wangdaye.waves.ui.widget.ThemeActivity;
+import com.wangdaye.waves.ui.widget.container.ThemeActivity;
 import com.wangdaye.waves.utils.ColorUtils;
+import com.wangdaye.waves.utils.DisplayUtils;
 import com.wangdaye.waves.utils.ImageUtils;
 import com.wangdaye.waves.utils.TypefaceUtils;
 
@@ -46,9 +47,10 @@ import java.util.List;
 public class AboutActivity extends ThemeActivity
         implements SwipeBackLayout.OnSwipeListener, View.OnClickListener {
     // widget
+    private StatusBarView statusBar;
+
     private ShotBarLayout shotBar;
-    private FrameLayout statusBar;
-    private ImageView shotImage;
+    private ShotView shotImage;
 
     private ShotScrollView scrollView;
     private ImageView appIcon;
@@ -80,18 +82,17 @@ public class AboutActivity extends ThemeActivity
 
         this.initWidget();
         this.initColorTheme(getString(R.string.nav_about), R.color.colorPrimary);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            getWindow().setNavigationBarColor(ContextCompat.getColor(this, R.color.colorPrimary));
-        }
-
-        this.initShotBar(shotBar.getMaxiHeight());
         this.loadImage();
-        this.scrollView.scrollTo(0, 0);
+
+        scrollView.scrollTo(0, 0);
+        scrollView.setPadding(0, (int) shotBar.getMaxiHeight(), 0, 0);
     }
 
     /** <br> UI. */
 
     private void initWidget() {
+        this.statusBar = (StatusBarView) findViewById(R.id.activity_about_statusBar);
+
         SwipeBackLayout swipeBackLayout = (SwipeBackLayout) findViewById(R.id.activity_about_swipeBackLayout);
         assert swipeBackLayout != null;
         swipeBackLayout.setBackground(findViewById(R.id.activity_about_statusBar));
@@ -101,23 +102,11 @@ public class AboutActivity extends ThemeActivity
 
         ShotScrollParent scrollParent = (ShotScrollParent) findViewById(R.id.activity_about_container);
         assert scrollParent != null;
-        scrollParent.setPadding(0, getStatusBarHeight(), 0, 0);
+        scrollParent.setPadding(0, DisplayUtils.getStatusBarHeight(getResources()), 0, 0);
 
         this.initShotPart();
         this.initTitlePart();
         this.initDataPart();
-    }
-
-    private void initShotBar(float height) {
-        FrameLayout.LayoutParams shotBarParams = (FrameLayout.LayoutParams) shotBar.getLayoutParams();
-        shotBarParams.height = (int) height;
-        shotBarParams.width = getResources().getDisplayMetrics().widthPixels;
-        shotBar.setLayoutParams(shotBarParams);
-
-        FrameLayout.LayoutParams statusBarParams = (FrameLayout.LayoutParams) statusBar.getLayoutParams();
-        statusBarParams.height = getStatusBarHeight();
-
-        scrollView.setPadding(0, (int) height, 0, 0);
     }
 
     private void initShotPart() {
@@ -125,9 +114,7 @@ public class AboutActivity extends ThemeActivity
         shotBar.setMaxiHeight((float) (getResources().getDisplayMetrics().widthPixels / 4.0 * 3.0));
         shotBar.setMiniHeight((float) (getResources().getDisplayMetrics().widthPixels / 4.0));
 
-        this.statusBar = (FrameLayout) findViewById(R.id.activity_about_statusBar);
-
-        this.shotImage = (ImageView) findViewById(R.id.activity_about_shot);
+        this.shotImage = (ShotView) findViewById(R.id.activity_about_shot);
 
         this.scrollView = (ShotScrollView) findViewById(R.id.activity_about_scrollView);
     }
@@ -147,15 +134,16 @@ public class AboutActivity extends ThemeActivity
     }
 
     private void initDataPart() {
-
         HtmlTextView description = (HtmlTextView) findViewById(R.id.container_about_app_description);
         assert description != null;
         description.setHtmlFromString(appDescription, new HtmlTextView.RemoteImageGetter());
 
         Button changelogButton = (Button) findViewById(R.id.container_about_changelogButton);
+        assert changelogButton != null;
         changelogButton.setOnClickListener(this);
 
         Button githubButton = (Button) findViewById(R.id.container_about_githubButton);
+        assert githubButton != null;
         githubButton.setOnClickListener(this);
 
         List<OpenSourceItem> itemList = new ArrayList<>();
@@ -165,6 +153,7 @@ public class AboutActivity extends ThemeActivity
         OpenSourceAdapter adapter = new OpenSourceAdapter(itemList, typeface);
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.container_about_openSourceList);
+        assert recyclerView != null;
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
     }
@@ -187,7 +176,8 @@ public class AboutActivity extends ThemeActivity
                 "Junit4",
                 "Glide",
                 "Okhttp",
-                "Html-TextView"
+                "Html-TextView",
+                "CircularProgressView"
         };
 
         this.subtitle = new String[] {
@@ -198,7 +188,8 @@ public class AboutActivity extends ThemeActivity
                 "junit-team",
                 "Bump Technologies",
                 "Square",
-                "Sufficiently Secure"
+                "Sufficiently Secure",
+                "Rahat Ahmed"
         };
 
         this.web = new String[] {
@@ -209,7 +200,8 @@ public class AboutActivity extends ThemeActivity
                 "<a href=\"https://github.com/junit-team/junit4\">https://github.com/junit-team/junit4</a>",
                 "<a href=\"https://github.com/bumptech/glide\">https://github.com/bumptech/glide</a>",
                 "<a href=\"https://github.com/square/okhttp\">https://github.com/square/okhttp</a>",
-                "<a href=\"https://github.com/SufficientlySecure/html-textview\">https://github.com/SufficientlySecure/html-textview</a>"
+                "<a href=\"https://github.com/SufficientlySecure/html-textview\">https://github.com/SufficientlySecure/html-textview</a>",
+                "<a href=\"https://github.com/rahatarmanahmed/CircularProgressView\">https://github.com/rahatarmanahmed/CircularProgressView</a>"
         };
     }
 
@@ -272,7 +264,7 @@ public class AboutActivity extends ThemeActivity
         public boolean onResourceReady(GlideDrawable resource, Integer model,
                                        Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
             Bitmap bitmap = ImageUtils.drawableToBitmap(resource);
-            int color = ColorUtils.calcBackgroundColor(AboutActivity.this, bitmap, 6);
+            int color = ColorUtils.calcBackgroundColor(bitmap);
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 getWindow().getDecorView().setSystemUiVisibility(

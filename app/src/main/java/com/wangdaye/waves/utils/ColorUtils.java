@@ -13,7 +13,7 @@ import com.wangdaye.waves.R;
 
 public class ColorUtils {
 
-    public static int calcBackgroundColor(Context context, Bitmap bitmap, int num) {
+    public static int calcBackgroundColor(Bitmap bitmap) {
         Matrix matrix = new Matrix();
         matrix.setScale((float) (1.0 / bitmap.getWidth()), (float) (1.0 / 2.0));
         bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), 2, matrix, false);
@@ -29,6 +29,6 @@ public class ColorUtils {
 
         grey = (int) (red * 0.3 + green * 0.59 + blue * 0.11);
         grey = alpha | (grey << 16) | (grey << 8) | grey;
-        return grey > ContextCompat.getColor(context, R.color.colorTextGrey2nd);
+        return context != null && grey > ContextCompat.getColor(context, R.color.colorTextGrey2nd);
     }
 }

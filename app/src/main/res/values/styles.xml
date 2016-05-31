@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Theme -->
     <style name="WavesTheme" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -13,6 +13,9 @@
         <item name="content_color">@color/colorTextDark2nd</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="android:textColorPrimary">@android:color/white</item>
+        <item name="android:windowTranslucentNavigation">true</item>
+        <item name="android:windowTranslucentStatus">true</item>
     </style>
 
     <style name="WavesTheme.Translucent">
@@ -22,16 +25,24 @@
 
     <style name="WavesTheme.Translucent.Dribbble">
         <item name="colorAccent">@color/colorDribbblePink</item>
+        <item name="android:windowTranslucentNavigation">false</item>
+    </style>
+
+    <style name="WavesTheme.Translucent.Settings">
+        <item name="colorAccent">@color/colorTextDark2nd</item>
+        <item name="title_color">@color/colorAccent</item>
+        <item name="android:windowTranslucentNavigation">false</item>
     </style>
 
     <style name="WavesTheme.Translucent.About">
         <item name="colorAccent">@color/colorTextDark2nd</item>
         <item name="title_color">@color/colorAccent</item>
+        <item name="android:windowTranslucentNavigation">false</item>
     </style>
     
     <!-- Toolbar -->
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />\
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Dark" />
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <!-- Text -->
     <style name="title_text">
@@ -87,9 +98,19 @@
         <item name="android:layout_marginRight">@dimen/card_margin</item>
         <item name="android:layout_marginBottom">@dimen/card_margin</item>
         <item name="cardCornerRadius">2dp</item>
-        <item name="cardElevation">2dp</item>
+        <item name="cardElevation">5dp</item>
         <item name="android:clickable">true</item>
         <item name="android:foreground">?attr/selectableItemBackground</item>
+        <item name="android:stateListAnimator" tools:ignore="NewApi">@animator/touch_rise</item>
+    </style>
+
+    <style name="material_tile" parent="material_card">
+        <item name="android:layout_marginTop">0dp</item>
+        <item name="android:layout_marginLeft">0dp</item>
+        <item name="android:layout_marginRight">0dp</item>
+        <item name="android:layout_marginBottom">0dp</item>
+        <item name="cardCornerRadius">0dp</item>
+        <item name="cardElevation">5dp</item>
     </style>
 
     <style name="list_card" parent="material_card">
@@ -97,7 +118,7 @@
     </style>
 
     <style name="reveal_card" parent="material_card">
-        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
         <item name="cardBackgroundColor">@android:color/transparent</item>
         <item name="cardElevation">0dp</item>
     </style>
@@ -111,7 +132,6 @@
         <item name="android:textSize">@dimen/subtitle_text_size</item>
         <item name="android:alpha">0.5</item>
         <item name="android:layout_alignParentRight">true</item>
-        <item name="android:layout_alignParentBottom">true</item>
         <item name="android:layout_margin">@dimen/card_margin</item>
     </style>
 
@@ -144,6 +164,11 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_margin">@dimen/card_info_margin</item>
+    </style>
+
+    <style name="material_icon.mini">
+        <item name="android:layout_width">18dp</item>
+        <item name="android:layout_height">18dp</item>
     </style>
 
     <style name="image_button">

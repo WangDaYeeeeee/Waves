@@ -12,8 +12,30 @@
         <item name="content_color">@color/colorTextDark2nd</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowContentTransitions">true</item>
+    </style>
+
+    <style name="WavesTheme.Translucent.Dribbble">
+        <item name="colorAccent">@color/colorDribbblePink</item>
+        <item name="android:windowTranslucentNavigation">false</item>
+        <item name="android:navigationBarColor">?attr/colorPrimary</item>
+    </style>
+
+    <style name="WavesTheme.Translucent.Settings">
+        <item name="colorAccent">@color/colorTextDark2nd</item>
+        <item name="title_color">@color/colorAccent</item>
+        <item name="android:windowTranslucentNavigation">false</item>
+        <item name="android:navigationBarColor">?attr/colorPrimary</item>
+    </style>
+
+    <style name="WavesTheme.Translucent.About">
+        <item name="colorAccent">@color/colorTextDark2nd</item>
+        <item name="title_color">@color/colorAccent</item>
+        <item name="android:windowTranslucentNavigation">false</item>
+        <item name="android:navigationBarColor">?attr/colorPrimary</item>
     </style>
 
 </resources>

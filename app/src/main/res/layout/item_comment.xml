@@ -8,7 +8,7 @@
     android:background="?attr/root_background"
     android:foreground="?attr/selectableItemBackground">
 
-    <com.wangdaye.waves.ui.widget.CircleImageView
+    <com.wangdaye.waves.ui.widget.imageView.CircleImageView
         android:id="@+id/item_comment_icon"
         android:layout_width="@dimen/normal_icon_size"
         android:layout_height="@dimen/normal_icon_size"

@@ -32,6 +32,8 @@
     <string name="thx">致谢</string>
     <string name="icon">Icon</string>
     <string name="comments">评论</string>
+    <string name="searchbar_hint">从Dribbble中搜索…</string>
+    <string name="check_shot_item_type">选择Shot视图的类型</string>
 
     <!-- feedback -->
     <string name="login_dribble">Hello Dribbble.</string>
@@ -43,7 +45,6 @@
     <string name="cannot_create_file_dir">无法创建文件路径</string>
     <string name="air_ball">AIR BALL!</string>
     <string name="touch_to_retry">点击重试</string>
-    <string name="searchbar_hint">从Dribbble中搜索…</string>
     <string name="download_start">下载开始</string>
     <string name="download_success">下载成功</string>
     <string name="no_data">无数据</string>
@@ -61,9 +62,9 @@
     <!-- menu -->
     <string name="action_search">@string/search</string>
     <string name="action_filtrate">@string/filtrate</string>
+    <string name="action_shot_item_type">Shot样式</string>
 
     <!-- intent key words -->
-    <string name="key_transition_anim">transition_anim</string>
     <string name="key_shot_id">shot_id</string>
     <string name="key_image_uri">image_uri</string>
     <string name="key_player_icon_uri">player_icon_uri</string>
@@ -88,6 +89,8 @@
     <string name="settings_shots_list_summary">默认为AnyType</string>
 
     <!-- share preference -->
+    <string name="key_shots_item_type_popular">shots_item_type_popular</string>
+    <string name="key_shots_item_type_recent">shots_item_type_recent</string>
     <string name="key_shots_sort">shots_sort</string>
     <string name="key_shots_list">shots_list</string>
     <string name="default_shots_sort">popular</string>

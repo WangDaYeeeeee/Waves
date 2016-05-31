@@ -1,4 +1,4 @@
-package com.wangdaye.waves.ui.widget;
+package com.wangdaye.waves.ui.widget.imageView;
 
 import android.content.Context;
 import android.content.res.TypedArray;

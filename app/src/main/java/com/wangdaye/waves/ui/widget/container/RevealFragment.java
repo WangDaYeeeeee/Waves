@@ -1,6 +1,6 @@
-package com.wangdaye.waves.ui.widget;
+package com.wangdaye.waves.ui.widget.container;
 
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 
 /**
  * Reveal fragment, coordinate reveal view to show reveal animation.

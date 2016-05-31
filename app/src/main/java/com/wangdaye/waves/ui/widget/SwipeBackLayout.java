@@ -31,7 +31,7 @@ public class SwipeBackLayout extends FrameLayout
     private float swipeDownY;
     private float swipeUpY;
     private float swipeLength;
-    private float SWIPE_DIST = 200;
+    private float SWIPE_TRIGGER = 200;
     private final float SWIPE_RADIO = 2.5F;
     private float touchSlop;
 
@@ -79,7 +79,7 @@ public class SwipeBackLayout extends FrameLayout
         this.sendMsgTime = 0;
 
         int width = getResources().getDisplayMetrics().widthPixels;
-        this.SWIPE_DIST = (int) (SWIPE_DIST / 1080.0 * width);
+        this.SWIPE_TRIGGER = (int) (SWIPE_TRIGGER / 1080.0 * width);
         this.touchSlop = ViewConfiguration.get(getContext()).getScaledTouchSlop();
 
         this.setState(NORMAL_STATE);
@@ -100,7 +100,7 @@ public class SwipeBackLayout extends FrameLayout
         if (ev.getAction() == MotionEvent.ACTION_DOWN) {
             oldY = ev.getY();
         }
-        return stateNow != MOVING;
+        return stateNow != MOVING && isEnabled();
     }
 
     @Override
@@ -211,7 +211,7 @@ public class SwipeBackLayout extends FrameLayout
                     requestLayout();
                 }
 
-                if ((swipeDir == UP && swipeUpY >= SWIPE_DIST) || (swipeDir == DOWN && swipeDownY >= SWIPE_DIST)) {
+                if ((swipeDir == UP && swipeUpY >= SWIPE_TRIGGER) || (swipeDir == DOWN && swipeDownY >= SWIPE_TRIGGER)) {
                     swipeResult = SWIPE_FINISH;
                     statusBar.setVisibility(View.GONE);
                     this.swipeOver();
@@ -272,8 +272,8 @@ public class SwipeBackLayout extends FrameLayout
             return;
         }
         this.swipeLength = swipeLength;
-        if (swipeLength < SWIPE_DIST) {
-            statusBar.setAlpha((float) (1 - swipeLength * 1.0 / SWIPE_DIST));
+        if (swipeLength < SWIPE_TRIGGER) {
+            statusBar.setAlpha((float) (1 - swipeLength * 1.0 / SWIPE_TRIGGER));
             invalidate();
         } else {
             statusBar.setAlpha(0);
@@ -282,10 +282,10 @@ public class SwipeBackLayout extends FrameLayout
     }
 
     private int getShadowColor() {
-        if (swipeLength >= SWIPE_DIST) {
+        if (swipeLength >= SWIPE_TRIGGER) {
             return Color.argb(0, 51, 51, 51);
         }
-        return Color.argb((int) (255.0 * (1 - swipeLength / SWIPE_DIST)), 51, 51, 51);
+        return Color.argb((int) (255.0 * (1 - swipeLength / SWIPE_TRIGGER)), 51, 51, 51);
     }
 
     /** <br> interface. */
@@ -322,7 +322,7 @@ public class SwipeBackLayout extends FrameLayout
                             (int) ((swipeUpY + swipeDownY + delta * sendMsgTime) * -swipeDir * 1.0),
                             getMeasuredWidth(),
                             (int) (getMeasuredHeight() + (swipeUpY + swipeDownY + delta * sendMsgTime) * -swipeDir * 1.0));
-                    setBackgroundAlpha(SWIPE_DIST);
+                    setBackgroundAlpha(SWIPE_TRIGGER);
                     break;
 
                 case SWIPE_CANCEL:

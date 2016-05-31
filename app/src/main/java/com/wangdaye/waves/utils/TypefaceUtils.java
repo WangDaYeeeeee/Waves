@@ -24,6 +24,7 @@ public class TypefaceUtils {
         } catch (NoSuchFieldException e) {
             e.printStackTrace();
         }
+        assert field != null;
         field.setAccessible(true);
         TextView textView = null;
         try {
@@ -33,6 +34,7 @@ public class TypefaceUtils {
         }
 
         Typeface typeface = getTypeface(context);
+        assert textView != null;
         textView.setTypeface(typeface);
         try {
             field.set(toolbar, textView);

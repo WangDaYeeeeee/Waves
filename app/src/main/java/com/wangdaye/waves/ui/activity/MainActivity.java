@@ -1,24 +1,22 @@
 package com.wangdaye.waves.ui.activity;
 
-import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.v4.app.FragmentManager;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.MenuItem;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -26,9 +24,10 @@ import com.bumptech.glide.util.Util;
 import com.wangdaye.waves.R;
 import com.wangdaye.waves.data.dirbbble.tools.DribbbleService;
 import com.wangdaye.waves.ui.fragment.HomeFragment;
-import com.wangdaye.waves.ui.widget.RevealFragment;
+import com.wangdaye.waves.ui.widget.container.RevealFragment;
 import com.wangdaye.waves.ui.widget.MyFloatingActionButton;
-import com.wangdaye.waves.ui.widget.ThemeActivity;
+import com.wangdaye.waves.ui.widget.container.ThemeActivity;
+import com.wangdaye.waves.utils.DisplayUtils;
 import com.wangdaye.waves.utils.SafeHandler;
 import com.wangdaye.waves.utils.TypefaceUtils;
 
@@ -83,9 +82,6 @@ public class MainActivity extends ThemeActivity
         this.handler = new SafeHandler<>(this);
         this.initWidget();
         this.initColorTheme(getString(R.string.app_name), R.color.colorPrimary);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-        }
         this.changeFragment(HOME_FRAGMENT, true);
     }
 
@@ -159,14 +155,11 @@ public class MainActivity extends ThemeActivity
 
     private void initFab() {
         this.fab = (MyFloatingActionButton) findViewById(R.id.container_main_fab);
-
         assert fab != null;
         CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) fab.getLayoutParams();
-        layoutParams.bottomMargin = getNavigationBarHeight() + layoutParams.bottomMargin;
+        layoutParams.bottomMargin = DisplayUtils.getNavigationBarHeight(getResources()) + layoutParams.bottomMargin;
         fab.setLayoutParams(layoutParams);
         fab.setOnClickListener(this);
-
-        fab.setVisibility(View.GONE);
     }
 
     private void initDrawer() {
@@ -218,6 +211,7 @@ public class MainActivity extends ThemeActivity
         fragmentNow = HOME_FRAGMENT;
         fragmentList = new ArrayList<>();
         started = false;
+        DisplayUtils.setDisplayDpi(getResources().getDisplayMetrics().densityDpi);
     }
 
     public String[] getFiltrateData() {
@@ -238,16 +232,13 @@ public class MainActivity extends ThemeActivity
         }
 
         for (Fragment f : fragmentList) {
-            getFragmentManager()
-                    .beginTransaction()
-                    .remove(f)
-                    .commit();
+            getSupportFragmentManager().popBackStack();
         }
         fragmentList.clear();
 
         this.fragmentNow = fragmentTo;
 
-        final FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        final FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         Fragment newFragment;
         NavigationView navView = (NavigationView) findViewById(R.id.activity_main_navView);
         switch (fragmentTo) {
@@ -287,8 +278,7 @@ public class MainActivity extends ThemeActivity
     }
 
     public void insertFragment(Fragment fragment) {
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         fragmentList.add(fragment);
         transaction.add(R.id.container_main_container, fragment);
         transaction.addToBackStack(null);
@@ -306,7 +296,7 @@ public class MainActivity extends ThemeActivity
     }
 
     public void popFragment() {
-        getFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        getSupportFragmentManager().popBackStack();
     }
 
     public void popFragmentList() {
@@ -360,6 +350,9 @@ public class MainActivity extends ThemeActivity
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.container_main_fab:
+                if (!fab.translating && fab.showing) {
+                    Toast.makeText(this, "click fab", Toast.LENGTH_SHORT).show();
+                }
                 break;
         }
     }

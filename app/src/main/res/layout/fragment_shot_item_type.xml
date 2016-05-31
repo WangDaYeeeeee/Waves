@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fragment_shot_item_type"
+    android:fitsSystemWindows="true"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
+
+    <com.wangdaye.waves.ui.widget.RevealView
+        android:id="@+id/fragment_shot_item_type_background"
+        android:alpha="0.7"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <LinearLayout
+        android:id="@+id/fragment_shot_item_type_view_container"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <TextView
+            android:text="@string/check_shot_item_type"
+            android:layout_margin="@dimen/card_info_margin"
+            android:textColor="?attr/root_background"
+            style="@style/large_title_text" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/fragment_shot_item_type_recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+</android.support.design.widget.CoordinatorLayout>

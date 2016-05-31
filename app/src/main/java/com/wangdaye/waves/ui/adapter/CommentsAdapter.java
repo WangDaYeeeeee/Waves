@@ -13,7 +13,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.wangdaye.waves.R;
 import com.wangdaye.waves.data.item.CommentItem;
-import com.wangdaye.waves.ui.widget.CircleImageView;
+import com.wangdaye.waves.ui.widget.imageView.CircleImageView;
 
 import org.sufficientlysecure.htmltextview.HtmlTextView;
 
@@ -65,6 +65,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
     }
 
     /** interface. */
+
     public interface MyItemClickListener {
         void onItemClick(View view, int position);
     }

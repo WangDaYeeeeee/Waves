@@ -13,7 +13,7 @@
         android:layout_height="@dimen/shot_title_container_height"
         android:background="?attr/sub_root_background">
 
-        <com.wangdaye.waves.ui.widget.CircleImageView
+        <com.wangdaye.waves.ui.widget.imageView.CircleImageView
             android:id="@+id/container_shot_player"
             android:layout_width="@dimen/large_icon_size"
             android:layout_height="@dimen/large_icon_size"
@@ -150,47 +150,21 @@
 
         </LinearLayout>
 
-        <TextView
-            android:text="@string/comments"
-            android:textSize="14sp"
-            android:layout_margin="@dimen/card_info_margin"
-            style="@style/subtitle_text" />
-<!--
-            <Button xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:text="@string/check_all"
-                android:textSize="@dimen/subtitle_text_size"
-                android:textStyle="bold"
-                android:textColor="@android:color/white"
-                android:layout_centerInParent="true"
-                android:layout_width="wrap_content"
-                android:layout_height="36dp"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="@dimen/card_info_margin"
-                android:foreground="?attr/selectableItemBackground"
-                android:background="@drawable/button_shot"
-                tools:ignore="RelativeOverlap,RtlHardcoded" />
--->
         <FrameLayout
-            android:background="?attr/sub_root_background"
-            android:layout_width="match_parent"
-            android:layout_height="1dp" />
-
-        <FrameLayout
+            android:id="@+id/container_shot_loadingContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <com.wangdaye.waves.ui.widget.WavesLoadingView
-                android:id="@+id/container_shot_wavesLoadingView"
-                android:layout_width="match_parent"
-                android:layout_height="100dp" />
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/container_details_commentList"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+            <include layout="@layout/container_airball_view_mini" />
+            <include layout="@layout/container_loading_view" />
 
         </FrameLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/container_details_commentList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="?attr/actionBarSize" />
 
     </android.support.design.widget.AppBarLayout>
 

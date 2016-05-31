@@ -1,6 +1,8 @@
 package com.wangdaye.waves.ui.widget;
 
+import android.animation.Animator;
 import android.animation.AnimatorInflater;
+import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.content.Context;
 import android.support.design.widget.FloatingActionButton;
@@ -15,26 +17,28 @@ import com.wangdaye.waves.R;
 public class MyFloatingActionButton extends FloatingActionButton {
     // data
     public boolean showing;
+    public boolean translating;
 
     /** <br> life cycle. */
 
     public MyFloatingActionButton(Context context) {
         super(context);
-        this.initialize(context);
+        this.initialize();
     }
 
     public MyFloatingActionButton(Context context, AttributeSet attrs) {
         super(context, attrs);
-        this.initialize(context);
+        this.initialize();
     }
 
     public MyFloatingActionButton(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        this.initialize(context);
+        this.initialize();
     }
 
-    private void initialize(Context context) {
+    private void initialize() {
         this.showing = false;
+        this.translating = false;
     }
 
     /** <br> UI. */
@@ -42,9 +46,19 @@ public class MyFloatingActionButton extends FloatingActionButton {
     @Override
     public void show() {
         if (!showing) {
-            showing = true;
+            this.showing = true;
+            this.translating = false;
+            this.setAlpha(1.0F);
+            this.setVisibility(VISIBLE);
             AnimatorSet fabShow = (AnimatorSet) AnimatorInflater.loadAnimator(getContext(), R.animator.fab_show);
             fabShow.setTarget(this);
+            fabShow.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    super.onAnimationEnd(animation);
+                    setEnabled(true);
+                }
+            });
             fabShow.start();
         }
     }
@@ -55,6 +69,14 @@ public class MyFloatingActionButton extends FloatingActionButton {
             showing = false;
             AnimatorSet fabHide = (AnimatorSet) AnimatorInflater.loadAnimator(getContext(), R.animator.fab_hide);
             fabHide.setTarget(this);
+            fabHide.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    super.onAnimationEnd(animation);
+                    setVisibility(GONE);
+                    setEnabled(false);
+                }
+            });
             fabHide.start();
         }
     }

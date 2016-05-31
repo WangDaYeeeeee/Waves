@@ -5,7 +5,7 @@
     <color name="colorPrimary">#333333</color>
     <color name="colorPrimaryDark">#292929</color>
     <color name="colorAccent">#80deea</color>
-    <color name="colorRoot">#ffffff</color>
+    <color name="colorRoot">#fafafa</color>
     <color name="colorSubRoot">#eeeeee</color>
     <color name="colorShadow">@color/colorPrimary</color>
     <color name="colorCard">@color/cardview_light_background</color>

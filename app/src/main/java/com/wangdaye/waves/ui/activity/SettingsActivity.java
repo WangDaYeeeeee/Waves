@@ -1,16 +1,14 @@
 package com.wangdaye.waves.ui.activity;
 
-import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.FrameLayout;
 
 import com.wangdaye.waves.R;
 import com.wangdaye.waves.ui.fragment.SettingsFragment;
-import com.wangdaye.waves.ui.widget.ThemeActivity;
+import com.wangdaye.waves.ui.widget.StatusBarView;
+import com.wangdaye.waves.ui.widget.container.ThemeActivity;
 
 /**
  * Settings activity.
@@ -39,9 +37,6 @@ public class SettingsActivity extends ThemeActivity
 
         this.initWidget();
         this.initColorTheme(getString(R.string.nav_settings), R.color.colorPrimary);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            getWindow().setNavigationBarColor(ContextCompat.getColor(this, R.color.colorPrimary));
-        }
 
         SettingsFragment settingsFragment = new SettingsFragment();
         getFragmentManager()
@@ -53,13 +48,12 @@ public class SettingsActivity extends ThemeActivity
     /** <br> widget. */
 
     private void initWidget() {
-        FrameLayout statusBar = (FrameLayout) findViewById(R.id.activity_settings_statusBar);
-        CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) statusBar.getLayoutParams();
-        params.height = getStatusBarHeight();
-        statusBar.setLayoutParams(params);
+        StatusBarView statusBar = (StatusBarView) findViewById(R.id.activity_settings_statusBar);
+        assert statusBar != null;
         statusBar.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.activity_settings_toolbar);
+        assert toolbar != null;
         toolbar.setNavigationIcon(R.drawable.ic_back);
         toolbar.setTitle(getString(R.string.nav_settings));
         toolbar.setNavigationOnClickListener(this);

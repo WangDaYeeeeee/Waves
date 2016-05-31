@@ -32,7 +32,7 @@
 
     </LinearLayout>
 
-    <FrameLayout
+    <com.wangdaye.waves.ui.widget.StatusBarView
         android:id="@+id/activity_settings_statusBar"
         android:background="?attr/colorPrimaryDark"
         android:layout_width="match_parent"

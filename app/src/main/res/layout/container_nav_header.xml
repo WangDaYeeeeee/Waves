@@ -39,7 +39,7 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         tools:ignore="RtlHardcoded" />
 <!--
-    <com.wangdaye.waves.ui.widget.CircleImageView
+    <com.wangdaye.waves.ui.widget.imageView.CircleImageView
         android:id="@+id/container_nav_header_userIcon"
         android:layout_width="@dimen/large_icon_size"
         android:layout_height="@dimen/large_icon_size"

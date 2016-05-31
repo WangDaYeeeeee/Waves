@@ -2,12 +2,14 @@ package com.wangdaye.waves.ui.widget;
 
 import android.content.Context;
 import android.support.annotation.Nullable;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 
 import com.wangdaye.waves.ui.adapter.ShotsAdapter;
+import com.wangdaye.waves.ui.widget.swipeRefreshLayout.BothWaySwipeRefreshLayout;
 
 /**
  * My recycler view.
@@ -16,6 +18,7 @@ import com.wangdaye.waves.ui.adapter.ShotsAdapter;
 public class MyRecyclerView extends RecyclerView
         implements ShotsAdapter.LoadFinishCallback {
     // widget
+    private BothWaySwipeRefreshLayout swipeRefreshLayout;
     private MyFloatingActionButton fab;
 
     private OnLoadMoreListener loadMoreListener;
@@ -48,19 +51,25 @@ public class MyRecyclerView extends RecyclerView
         this.isLoadingMore = false;
 
         this.fab = null;
+        this.swipeRefreshLayout = null;
     }
 
     /** <br> setter. */
 
-    public void setFab(MyFloatingActionButton fab) {
-        this.fab = fab;
+    public void setRelateView(BothWaySwipeRefreshLayout s, MyFloatingActionButton f) {
+        this.swipeRefreshLayout = s;
+        this.fab = f;
     }
 
-    /** <br> UI. */
-
-    public void scrollToTop() {
-        getLayoutManager().scrollToPosition(0);
+    public boolean isLoadingMore() {
+        return isLoadingMore;
     }
+
+    public void setLoadingMore(boolean isLoadingMore) {
+        this.isLoadingMore = isLoadingMore;
+    }
+
+    /** <br> touch. */
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
@@ -108,6 +117,12 @@ public class MyRecyclerView extends RecyclerView
                 }
             }
 
+            if (swipeRefreshLayout != null
+                    && isLoadingMore
+                    && ViewCompat.canScrollVertically(MyRecyclerView.this, 1)) {
+                swipeRefreshLayout.setLoading(true);
+            }
+/*
             if (getLayoutManager() instanceof LinearLayoutManager) {
                 int lastVisibleItem = ((LinearLayoutManager) getLayoutManager()).findLastVisibleItemPosition();
                 int totalItemCount = MyRecyclerView.this.getAdapter().getItemCount();
@@ -116,7 +131,7 @@ public class MyRecyclerView extends RecyclerView
                     loadMoreListener.onLoadMore();
                     isLoadingMore = true;
                 }
-            }
+            }*/
         }
 
         @Override

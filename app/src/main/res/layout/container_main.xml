@@ -19,9 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        android:visibility="gone"
         android:src="@drawable/ic_plus"
-        app:backgroundTint="?attr/colorAccent"
-        tools:visibility="visible" />
+        app:backgroundTint="?attr/colorAccent" />
 
 </android.support.design.widget.CoordinatorLayout>

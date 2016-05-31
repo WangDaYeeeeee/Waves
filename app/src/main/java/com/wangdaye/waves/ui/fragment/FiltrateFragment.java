@@ -20,7 +20,7 @@ import com.wangdaye.waves.R;
 import com.wangdaye.waves.data.dirbbble.api.DribbbleShotsAPI;
 import com.wangdaye.waves.ui.activity.MainActivity;
 import com.wangdaye.waves.ui.widget.MyFloatingActionButton;
-import com.wangdaye.waves.ui.widget.RevealFragment;
+import com.wangdaye.waves.ui.widget.container.RevealFragment;
 import com.wangdaye.waves.ui.widget.RevealView;
 
 /**
@@ -39,7 +39,6 @@ public class FiltrateFragment extends RevealFragment
     private OnFiltrateListener onFiltrateListener;
 
     // data
-    private String shotSort;
     private String shotList;
 
     @Override
@@ -84,25 +83,12 @@ public class FiltrateFragment extends RevealFragment
 
         this.infoContainer = (RelativeLayout) view.findViewById(R.id.fragment_filtrate_infoContainer);
 
-        Spinner sortSpinner = (Spinner) view.findViewById(R.id.fragment_filtrate_sortSpinner);
-        sortSpinner.setOnItemSelectedListener(new SortSpinnerItemSelectListener());
-        sortSpinner.setSelection(shotSortAdapter(shotSort));
         Spinner listSpinner = (Spinner) view.findViewById(R.id.fragment_filtrate_listSpinner);
         listSpinner.setOnItemSelectedListener(new ListSpinnerItemSelectListener());
         listSpinner.setSelection(shotListAdapter(shotList));
 
         Button done = (Button) view.findViewById(R.id.fragment_filtrate_doneButton);
         done.setOnClickListener(this);
-    }
-
-    private int shotSortAdapter(String shotSort) {
-        switch (shotSort) {
-            case DribbbleShotsAPI.SHOT_SORT_POPULAR:
-                return 0;
-            case DribbbleShotsAPI.SHOT_SORT_RECENT:
-                return 1;
-        }
-        return 0;
     }
 
     private int shotListAdapter(String shotList) {
@@ -127,8 +113,7 @@ public class FiltrateFragment extends RevealFragment
 
     /** <br> data. */
 
-    public void setData(String shotSort, String shotList) {
-        this.shotSort = shotSort;
+    public void setData(String shotList) {
         this.shotList = shotList;
     }
 
@@ -145,7 +130,7 @@ public class FiltrateFragment extends RevealFragment
                 container.removeFragment();
 
                 if (onFiltrateListener != null) {
-                    onFiltrateListener.changeFiltrateData(shotSort, shotList);
+                    onFiltrateListener.changeFiltrateData(shotList);
                 }
                 break;
 
@@ -155,25 +140,6 @@ public class FiltrateFragment extends RevealFragment
     }
 
     // spinner item click listener.
-
-    private class SortSpinnerItemSelectListener implements AdapterView.OnItemSelectedListener {
-        @Override
-        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-            switch (position) {
-                case 0:
-                    shotSort = DribbbleShotsAPI.SHOT_SORT_POPULAR;
-                    break;
-                case 1:
-                    shotSort = DribbbleShotsAPI.SHOT_SORT_RECENT;
-                    break;
-            }
-        }
-
-        @Override
-        public void onNothingSelected(AdapterView<?> parent) {
-
-        }
-    }
 
     private class ListSpinnerItemSelectListener implements AdapterView.OnItemSelectedListener {
         @Override
@@ -258,14 +224,10 @@ public class FiltrateFragment extends RevealFragment
     // on filtrate listener.
 
     public interface OnFiltrateListener {
-        void changeFiltrateData(String shotSort, String shotList);
+        void changeFiltrateData(String shotList);
     }
 
     public void setOnFiltrateListener(OnFiltrateListener listener) {
         this.onFiltrateListener = listener;
-    }
-
-    public void cleanOnFiltrateListener() {
-        this.onFiltrateListener = null;
     }
 }

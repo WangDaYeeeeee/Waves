@@ -23,7 +23,7 @@ import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,6 +35,7 @@ import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.target.Target;
 import com.bumptech.glide.util.Util;
+import com.github.rahatarmanahmed.cpv.CircularProgressView;
 import com.wangdaye.waves.R;
 import com.wangdaye.waves.application.Waves;
 import com.wangdaye.waves.data.dirbbble.model.Comment;
@@ -43,16 +44,17 @@ import com.wangdaye.waves.data.item.CommentItem;
 import com.wangdaye.waves.data.item.ShotItem;
 import com.wangdaye.waves.ui.activity.MainActivity;
 import com.wangdaye.waves.ui.adapter.CommentsAdapter;
-import com.wangdaye.waves.ui.widget.CircleImageView;
+import com.wangdaye.waves.ui.widget.imageView.CircleImageView;
 import com.wangdaye.waves.ui.widget.MyFloatingActionButton;
-import com.wangdaye.waves.ui.widget.RevealFragment;
+import com.wangdaye.waves.ui.widget.container.RevealFragment;
 import com.wangdaye.waves.ui.widget.RevealView;
-import com.wangdaye.waves.ui.widget.ShotBarLayout;
-import com.wangdaye.waves.ui.widget.ShotScrollParent;
-import com.wangdaye.waves.ui.widget.ShotScrollView;
+import com.wangdaye.waves.ui.widget.nestedScroll.ShotBarLayout;
+import com.wangdaye.waves.ui.widget.nestedScroll.ShotScrollParent;
+import com.wangdaye.waves.ui.widget.nestedScroll.ShotScrollView;
+import com.wangdaye.waves.ui.widget.imageView.ShotView;
 import com.wangdaye.waves.ui.widget.SwipeBackLayout;
-import com.wangdaye.waves.ui.widget.WavesLoadingView;
 import com.wangdaye.waves.utils.ColorUtils;
+import com.wangdaye.waves.utils.DisplayUtils;
 import com.wangdaye.waves.utils.ImageUtils;
 import com.wangdaye.waves.utils.TypefaceUtils;
 
@@ -73,11 +75,11 @@ public class ShotFragment extends RevealFragment
         DribbbleService.GetCommentsListener, CommentsAdapter.MyItemClickListener {
     // widget
     private SwipeBackLayout swipeBackLayout;
-    private ShotScrollParent scrollParent;
+    private RevealView revealView;
 
-    private ShotBarLayout shotBar;
     private FrameLayout statusBar;
-    private ImageView shotImage;
+    private ShotBarLayout shotBar;
+    private ShotView shotImage;
 
     private ShotScrollView scrollView;
 
@@ -85,8 +87,10 @@ public class ShotFragment extends RevealFragment
     private TextView likesNum;
 
     private MyFloatingActionButton fab;
-    private RevealView revealView;
-    private WavesLoadingView wavesLoadingView;
+
+    private FrameLayout loadingContainer;
+    private RelativeLayout airBallContainer;
+    private CircularProgressView circularProgressView;
     private RecyclerView recyclerView;
 
     // data
@@ -105,18 +109,25 @@ public class ShotFragment extends RevealFragment
         View view = localInflater.inflate(R.layout.fragment_shot, container, false);
 
         this.initWidget(view);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getActivity().getWindow().setNavigationBarColor(ContextCompat.getColor(getActivity(), R.color.colorPrimary));
-        }
         revealView.setState(RevealView.REVEALING);
-        wavesLoadingView.setState(WavesLoadingView.SHOWING);
-        ((MainActivity) getActivity())
-                .getDribbbleService()
-                .getDribbbleComments(shotItem.shotId, this);
+
+        this.getComments();
+        if (Util.isOnMainThread()) {
+            if (Util.isOnMainThread()) {
+                Glide.with(getActivity()) // shot.
+                        .load(shotItem.imageUri)
+                        .crossFade(300)
+                        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                        .listener(palette)
+                        .into(shotImage);
+            }
+            Glide.with(getActivity()) // icon.
+                    .load(shotItem.imageUri)
+                    .crossFade(300)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .into(playerIcon);
+        }
+
         return view;
     }
 
@@ -138,14 +149,10 @@ public class ShotFragment extends RevealFragment
 
     private void finish() {
         MainActivity container = (MainActivity) getActivity();
-        container.setStatusBarTransparent();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            container.getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-        }
         MyFloatingActionButton fab = (MyFloatingActionButton) container.findViewById(R.id.container_main_fab);
-        if (fab != null) {
-            fab.show();
-        }
+        assert fab != null;
+        fab.show();
+        container.setStatusBarTransparent();
         container.popFragment();
     }
 
@@ -153,13 +160,14 @@ public class ShotFragment extends RevealFragment
 
     private void initWidget(View view) {
         this.swipeBackLayout = (SwipeBackLayout) view.findViewById(R.id.fragment_shot_swipeBackLayout);
+        swipeBackLayout.setEnabled(false);
         swipeBackLayout.setBackground(view.findViewById(R.id.fragment_shot_statusBar));
         swipeBackLayout.setOnSwipeListener(this,
                 view.findViewById(R.id.fragment_shot_scrollView),
                 view.findViewById(R.id.fragment_shot_container));
 
-        this.scrollParent = (ShotScrollParent) view.findViewById(R.id.fragment_shot_container);
-        scrollParent.setPadding(0, ((MainActivity) getActivity()).getStatusBarHeight(), 0, 0);
+        ShotScrollParent scrollParent = (ShotScrollParent) view.findViewById(R.id.fragment_shot_container);
+        scrollParent.setPadding(0, DisplayUtils.getStatusBarHeight(getResources()), 0, 0);
 
         this.revealView = (RevealView) view.findViewById(R.id.fragment_shot_revealView);
         revealView.setDrawTime(RevealView.TWO_TIMES_SPEED);
@@ -173,32 +181,17 @@ public class ShotFragment extends RevealFragment
         this.initShotPart(view);
         this.initTitlePart(view);
         this.initDataPart(view);
-    }
-
-    private void initShotBar(float height) {
-        FrameLayout.LayoutParams shotBarParams = (FrameLayout.LayoutParams) shotBar.getLayoutParams();
-        shotBarParams.height = (int) height;
-        shotBarParams.width = getResources().getDisplayMetrics().widthPixels;
-        shotBar.setLayoutParams(shotBarParams);
-
-        FrameLayout.LayoutParams statusBarParams = (FrameLayout.LayoutParams) statusBar.getLayoutParams();
-        statusBarParams.height = ((MainActivity) getActivity()).getStatusBarHeight();
-
-        scrollView.setPadding(0, (int) height, 0, 0);
-
-        FrameLayout.LayoutParams fabParams = (FrameLayout.LayoutParams) fab.getLayoutParams();
-        fabParams.topMargin = fab.calcMargin(height, 0, 0);
-        fab.setLayoutParams(fabParams);
+        this.setWidgetSizeForShot();
     }
 
     private void initShotPart(View view) {
+        this.statusBar = (FrameLayout) view.findViewById(R.id.fragment_shot_statusBar);
+
         this.shotBar = (ShotBarLayout) view.findViewById(R.id.fragment_shot_shotBar);
         shotBar.setMaxiHeight((float) (getResources().getDisplayMetrics().widthPixels / 4.0 * 3.0));
         shotBar.setMiniHeight((float) (getResources().getDisplayMetrics().widthPixels / 4.0));
 
-        this.statusBar = (FrameLayout) view.findViewById(R.id.fragment_shot_statusBar);
-
-        this.shotImage = (ImageView) view.findViewById(R.id.fragment_shot_shot);
+        this.shotImage = (ShotView) view.findViewById(R.id.fragment_shot_shot);
         shotImage.setOnClickListener(this);
 
         this.scrollView = (ShotScrollView) view.findViewById(R.id.fragment_shot_scrollView);
@@ -238,11 +231,29 @@ public class ShotFragment extends RevealFragment
         view.findViewById(R.id.container_shot_views_container).setOnClickListener(this);
         view.findViewById(R.id.container_shot_buckets_container).setOnClickListener(this);
 
-        this.wavesLoadingView = (WavesLoadingView) view.findViewById(R.id.container_shot_wavesLoadingView);
-        wavesLoadingView.setNullString(getString(R.string.no_comments));
+        this.loadingContainer = (FrameLayout) view.findViewById(R.id.container_shot_loadingContainer);
+
+        this.airBallContainer = (RelativeLayout) view.findViewById(R.id.container_airball_view_mini);
+        airBallContainer.setVisibility(View.GONE);
+        airBallContainer.setOnClickListener(this);
+
+        TextView airBall = (TextView) view.findViewById(R.id.container_airball_view_mini_airBall);
+        airBall.setTypeface(TypefaceUtils.getTypeface(getActivity()));
+
+        this.circularProgressView = (CircularProgressView) view.findViewById(R.id.container_loading_view_circularProgressView);
 
         this.recyclerView = (RecyclerView) view.findViewById(R.id.container_details_commentList);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+    }
+
+    private void setWidgetSizeForShot() {
+        int height = (int) (getResources().getDisplayMetrics().widthPixels / 4.0 * 3.0);
+
+        scrollView.setPadding(0, height, 0, 0);
+
+        FrameLayout.LayoutParams fabParams = (FrameLayout.LayoutParams) fab.getLayoutParams();
+        fabParams.topMargin = fab.calcMargin(height, 0, 0);
+        fab.setLayoutParams(fabParams);
     }
 
     /** <br> data. */
@@ -251,7 +262,6 @@ public class ShotFragment extends RevealFragment
 
     public void setData(Context context, ShotItem shotItem, int revealColor, float x, float y) {
         this.shotItem = shotItem;
-
         String uri = shotItem.imageUri;
         this.isGif = uri.substring(uri.length() - 3).equals("gif");
         this.typeface = TypefaceUtils.getTypeface(context);
@@ -261,6 +271,12 @@ public class ShotFragment extends RevealFragment
                 ContextCompat.getColor(context, R.color.colorRoot));
         this.revealX = x;
         this.revealY = y;
+    }
+
+    private void getComments() {
+        ((MainActivity) getActivity())
+                .getDribbbleService()
+                .getDribbbleComments(shotItem.shotId, this);
     }
 
     // download.
@@ -350,6 +366,11 @@ public class ShotFragment extends RevealFragment
                     this.requestPermission(Waves.WRITE_EXTERNAL_STORAGE);
                 }
                 break;
+
+            case R.id.container_airball_view_mini:
+                circularProgressView.setVisibility(View.VISIBLE);
+                airBallContainer.setVisibility(View.GONE);
+                getComments();
         }
     }
 
@@ -368,16 +389,15 @@ public class ShotFragment extends RevealFragment
                 AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_in),
                 AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_in)
         };
-        viewIn[1].setAnimationListener(new ViewInListener());
 
-        this.initShotBar(shotBar.getMaxiHeight());
-
-        fab.setVisibility(View.VISIBLE);
-        fab.show();
         shotBar.setVisibility(View.VISIBLE);
         shotBar.startAnimation(viewIn[0]);
         scrollView.setVisibility(View.VISIBLE);
         scrollView.startAnimation(viewIn[1]);
+
+        fab.setVisibility(View.VISIBLE);
+        fab.show();
+        swipeBackLayout.setEnabled(true);
     }
 
     @Override
@@ -389,10 +409,7 @@ public class ShotFragment extends RevealFragment
 
     @Override
     public void getCommentsSuccess(Call<List<Comment>> call, retrofit2.Response<List<Comment>> response) {
-        if (response.body() == null || response.body().size() == 0) {
-            wavesLoadingView.setState(WavesLoadingView.NULL);
-            return;
-        }
+        loadingContainer.setVisibility(View.GONE);
 
         List<CommentItem> itemList = new ArrayList<>();
         for (int i = 0; i < response.body().size(); i ++) {
@@ -409,50 +426,11 @@ public class ShotFragment extends RevealFragment
 
     @Override
     public void getCommentsFailed(Call<List<Comment>> call, Throwable t) {
-        wavesLoadingView.setState(WavesLoadingView.FAILED);
-        wavesLoadingView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                wavesLoadingView.setState(WavesLoadingView.SHOWING);
-                ((MainActivity) getActivity())
-                        .getDribbbleService()
-                        .getDribbbleComments(shotItem.shotId, ShotFragment.this);
-                wavesLoadingView.setOnClickListener(null);
-            }
-        });
+        airBallContainer.setVisibility(View.VISIBLE);
+        circularProgressView.setVisibility(View.GONE);
     }
 
     // animation listener.
-
-    private class ViewInListener implements Animation.AnimationListener {
-
-        @Override
-        public void onAnimationStart(Animation animation) {
-
-        }
-
-        @Override
-        public void onAnimationEnd(Animation animation) {
-            if(Util.isOnMainThread()) {
-                Glide.with(getActivity()) // shot.
-                        .load(shotItem.imageUri)
-                        .crossFade(300)
-                        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                        .listener(palette)
-                        .into(shotImage);
-                Glide.with(getActivity()) // icon.
-                        .load(shotItem.imageUri)
-                        .crossFade(300)
-                        .diskCacheStrategy(DiskCacheStrategy.NONE)
-                        .into(playerIcon);
-            }
-        }
-
-        @Override
-        public void onAnimationRepeat(Animation animation) {
-
-        }
-    }
 
     private class ViewOutListener implements Animation.AnimationListener {
 
@@ -486,7 +464,7 @@ public class ShotFragment extends RevealFragment
         public boolean onResourceReady(GlideDrawable resource, String model,
                                        Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
             Bitmap bitmap = ImageUtils.drawableToBitmap(resource);
-            int color = ColorUtils.calcBackgroundColor(getActivity(), bitmap, 6);
+            int color = ColorUtils.calcBackgroundColor(bitmap);
 
             if (ColorUtils.isLightColor(getActivity(), color)) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

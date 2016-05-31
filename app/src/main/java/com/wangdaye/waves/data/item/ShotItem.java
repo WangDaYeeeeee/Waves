@@ -20,6 +20,7 @@ public class ShotItem {
     public long likes;
     public long views;
     public long buckets;
+    public long comments;
     public String[] tags;
 
     public ShotItem(Shot shot) {
@@ -43,6 +44,7 @@ public class ShotItem {
         this.likes = shot.likes_count;
         this.views = shot.views_count;
         this.buckets = shot.buckets_count;
+        this.comments = shot.comments_count;
         if (shot.tags != null) {
             this.tags = shot.tags.toArray(new String[shot.tags.size()]);
         } else {

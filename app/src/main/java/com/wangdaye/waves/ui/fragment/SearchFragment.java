@@ -19,7 +19,7 @@ import android.widget.TextView;
 import com.wangdaye.waves.R;
 import com.wangdaye.waves.ui.activity.MainActivity;
 import com.wangdaye.waves.ui.widget.MyFloatingActionButton;
-import com.wangdaye.waves.ui.widget.RevealFragment;
+import com.wangdaye.waves.ui.widget.container.RevealFragment;
 import com.wangdaye.waves.ui.widget.RevealView;
 
 /**
@@ -192,10 +192,6 @@ public class SearchFragment extends RevealFragment
 
     public interface OnSearchListener {
         void onSearch(String text);
-    }
-
-    public void cleanOnSearchListener() {
-        this.onSearchListener = null;
     }
 
     public void setOnSearchListener(OnSearchListener onSearchListener) {
