@@ -157,10 +157,6 @@ public class ShotsAdapter extends RecyclerView.Adapter<ShotsAdapter.ViewHolder> 
         this.myItemClickListener = listener;
     }
 
-    public interface LoadFinishCallback {
-        void loadFinish(Object obj);
-    }
-
     /** <br> holder. */
 
     public class ViewHolder extends RecyclerView.ViewHolder {

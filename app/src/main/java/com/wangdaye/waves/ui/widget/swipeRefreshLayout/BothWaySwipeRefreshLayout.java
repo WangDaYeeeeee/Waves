@@ -82,7 +82,6 @@ public class BothWaySwipeRefreshLayout extends ViewGroup
     private final NestedScrollingChildHelper mNestedScrollingChildHelper;
     private final int[] mParentScrollConsumed = new int[2];
     private final int[] mParentOffsetInWindow = new int[2];
-    private boolean mNestedScrollInProgress;
 
     private int mMediumAnimationDuration;
     private int mCurrentTargetOffsetTop;
@@ -272,9 +271,6 @@ public class BothWaySwipeRefreshLayout extends ViewGroup
                 mCurrentTargetOffsetTop,
                 (width / 2 + circleWidth / 2),
                 mCurrentTargetOffsetTop + circleHeight);
-
-        circleWidth = mCircleViews[1].getMeasuredWidth();
-        circleHeight = mCircleViews[1].getMeasuredHeight();
         mCircleViews[1].layout(
                 (width / 2 - circleWidth / 2),
                 getMeasuredHeight() - mCurrentTargetOffsetTop - circleHeight,
@@ -328,11 +324,7 @@ public class BothWaySwipeRefreshLayout extends ViewGroup
 
         float rotation = (-0.25f + .4f * adjustedPercent + tensionPercent * 2) * .5f; // 计算循环数据
         mProgress[dir].setProgressRotation(rotation);
-        if (dir == DIRECTION_TOP) {
-            setTargetOffsetTopAndBottom(dir, targetY - mCurrentTargetOffsetTop, true /* requires update */);
-        } else {
-            setTargetOffsetTopAndBottom(dir, mCurrentTargetOffsetTop - targetY, true /* requires update */);
-        }
+        setTargetOffsetTopAndBottom(dir, targetY - mCurrentTargetOffsetTop, true /* requires update */);
     }
 
     private void finishSpinner(final int dir, float overscrollTop) {
@@ -379,15 +371,21 @@ public class BothWaySwipeRefreshLayout extends ViewGroup
     private void moveToStart(int dir, float interpolatedTime) {
         int targetTop;
         targetTop = (mFrom + (int) ((mOriginalOffsetTop - mFrom) * interpolatedTime));
-        int offset = targetTop - mCircleViews[dir].getTop();
+        int offset = dir == DIRECTION_TOP ?
+                targetTop - mCircleViews[dir].getTop()
+                :
+                targetTop - (getMeasuredHeight() - mCircleViews[dir].getTop() - mCircleHeight);
         setTargetOffsetTopAndBottom(dir, offset, false /* requires update */);
     }
 
     private void setTargetOffsetTopAndBottom(int dir, int offset, boolean requiresUpdate) {
+        if (dir == DIRECTION_BOTTOM) {
+            offset *= -1;
+        }
         mCircleViews[dir].bringToFront();
         mCircleViews[dir].offsetTopAndBottom(offset);
         mCurrentTargetOffsetTop = dir == DIRECTION_TOP ?
-                mCircleViews[dir].getTop() : getMeasuredHeight() - mCircleViews[dir].getTop() + mCircleHeight;
+                mCircleViews[dir].getTop() : getMeasuredHeight() - mCircleViews[dir].getTop() - mCircleHeight;
         if (requiresUpdate && android.os.Build.VERSION.SDK_INT < 11) {
             invalidate();
         }
@@ -415,6 +413,13 @@ public class BothWaySwipeRefreshLayout extends ViewGroup
                 for (int i = 0; i < 2; i ++) {
                     setTargetOffsetTopAndBottom(i, mOriginalOffsetTop - mCircleViews[i].getTop(), true);
                 }
+                if (!canChildScrollUp() && mCircleViews[DIRECTION_BOTTOM].getVisibility() == VISIBLE) {
+                    mCircleViews[DIRECTION_BOTTOM].setVisibility(GONE);
+                }
+                if (!canChildScrollDown() && mCircleViews[DIRECTION_TOP].getVisibility() == VISIBLE) {
+                    mCircleViews[DIRECTION_TOP].setVisibility(GONE);
+                }
+
                 mActivePointerId = MotionEventCompat.getPointerId(ev, 0);
                 mIsBeingDragged = false;
                 final float initialDownY = getMotionEventY(ev, mActivePointerId);
@@ -491,10 +496,8 @@ public class BothWaySwipeRefreshLayout extends ViewGroup
                 final float overscrollTop = (y - mInitialMotionY) * DRAG_RATE;
                 if (mIsBeingDragged) {
                     if (overscrollTop > 0 && !canChildScrollUp()) {
-                        Log.d(LOG_TAG, "touchEvent - 识别下拉");
                         moveSpinner(DIRECTION_TOP, overscrollTop);
                     } else if (overscrollTop < 0 && !canChildScrollDown()) {
-                        Log.d(LOG_TAG, "touchEvent - 识别上拉");
                         moveSpinner(DIRECTION_BOTTOM, -overscrollTop);
                     }
                 }
@@ -611,7 +614,7 @@ public class BothWaySwipeRefreshLayout extends ViewGroup
             setTargetOffsetTopAndBottom(DIRECTION_BOTTOM, endTarget - mCurrentTargetOffsetTop,
                     true /* requires update */);
             mNotify = false;
-            startScaleUpAnimation(DIRECTION_BOTTOM, mRefreshListener);
+            startScaleUpAnimation(DIRECTION_BOTTOM, mLoadListener);
         } else {
             setLoading(loading, false /* notify */);
         }
@@ -667,7 +670,11 @@ public class BothWaySwipeRefreshLayout extends ViewGroup
             setTargetOffsetTopAndBottom(dir, mOriginalOffsetTop - mCurrentTargetOffsetTop,
                     true /* requires update */);
         }
-        mCurrentTargetOffsetTop = mCircleViews[dir].getTop();
+        if (dir == DIRECTION_TOP) {
+            mCurrentTargetOffsetTop = mCircleViews[dir].getTop();
+        } else {
+            mCurrentTargetOffsetTop = getMeasuredHeight() - mCircleViews[dir].getTop() - mCircleHeight;
+        }
     }
 
     private boolean isAnimationRunning(Animation animation) {
@@ -801,6 +808,8 @@ public class BothWaySwipeRefreshLayout extends ViewGroup
 
     /** <br> animation. */
 
+    // to correct position.
+
     private void animateOffsetToCorrectPosition(int dir, int from, Animation.AnimationListener listener) {
         mFrom = from;
         if (dir == DIRECTION_TOP) {
@@ -818,34 +827,6 @@ public class BothWaySwipeRefreshLayout extends ViewGroup
         mCircleViews[dir].clearAnimation();
         mCircleViews[dir].startAnimation(dir == DIRECTION_TOP ?
                 mAnimateToTopCorrectPosition : mAnimateToBottomCorrectPosition);
-    }
-
-    private void animateOffsetToStartPosition(int dir, int from, Animation.AnimationListener listener) {
-        if (mScale) {
-            // Scale the item back down
-            if (dir == DIRECTION_TOP) {
-                startScaleDownReturnToTopStartAnimation(from, listener);
-            } else {
-                startScaleDownReturnToBottomStartAnimation(from, listener);
-            }
-        } else {
-            mFrom = from;
-            if (dir == DIRECTION_TOP) {
-                mAnimateToTopStartPosition.reset();
-                mAnimateToTopStartPosition.setDuration(ANIMATE_TO_START_DURATION);
-                mAnimateToTopStartPosition.setInterpolator(mDecelerateInterpolator);
-            } else {
-                mAnimateToBottomStartPosition.reset();
-                mAnimateToBottomStartPosition.setDuration(ANIMATE_TO_START_DURATION);
-                mAnimateToBottomStartPosition.setInterpolator(mDecelerateInterpolator);
-            }
-            if (listener != null) {
-                mCircleViews[dir].setAnimationListener(listener);
-            }
-            mCircleViews[dir].clearAnimation();
-            mCircleViews[dir].startAnimation(dir == DIRECTION_TOP ?
-                    mAnimateToTopStartPosition : mAnimateToBottomStartPosition);
-        }
     }
 
     private final Animation mAnimateToTopCorrectPosition = new Animation() {
@@ -875,12 +856,46 @@ public class BothWaySwipeRefreshLayout extends ViewGroup
             } else {
                 endTarget = (int) mSpinnerFinalOffset;
             }
-            targetTop = (mFrom + (int) ((endTarget - mFrom) * interpolatedTime));
+
+            int realEndTarget = getMeasuredHeight() - endTarget - mCircleHeight;
+            int realFrom = getMeasuredHeight() - mFrom - mCircleHeight;
+
+            targetTop = (realFrom + (int) ((realEndTarget - realFrom) * interpolatedTime));
             int offset = targetTop - mCircleViews[DIRECTION_BOTTOM].getTop();
-            setTargetOffsetTopAndBottom(DIRECTION_BOTTOM, offset, false /* requires update */);
+            setTargetOffsetTopAndBottom(DIRECTION_BOTTOM, -offset, false /* requires update */);
             mProgress[DIRECTION_BOTTOM].setArrowScale(1 - interpolatedTime);
         }
     };
+
+    // to start position.
+
+    private void animateOffsetToStartPosition(int dir, int from, Animation.AnimationListener listener) {
+        if (mScale) {
+            // Scale the item back down
+            if (dir == DIRECTION_TOP) {
+                startScaleDownReturnToTopStartAnimation(from, listener);
+            } else {
+                startScaleDownReturnToBottomStartAnimation(from, listener);
+            }
+        } else {
+            mFrom = from;
+            if (dir == DIRECTION_TOP) {
+                mAnimateToTopStartPosition.reset();
+                mAnimateToTopStartPosition.setDuration(ANIMATE_TO_START_DURATION);
+                mAnimateToTopStartPosition.setInterpolator(mDecelerateInterpolator);
+            } else {
+                mAnimateToBottomStartPosition.reset();
+                mAnimateToBottomStartPosition.setDuration(ANIMATE_TO_START_DURATION);
+                mAnimateToBottomStartPosition.setInterpolator(mDecelerateInterpolator);
+            }
+            if (listener != null) {
+                mCircleViews[dir].setAnimationListener(listener);
+            }
+            mCircleViews[dir].clearAnimation();
+            mCircleViews[dir].startAnimation(dir == DIRECTION_TOP ?
+                    mAnimateToTopStartPosition : mAnimateToBottomStartPosition);
+        }
+    }
 
     private final Animation mAnimateToTopStartPosition = new Animation() {
         @Override
@@ -1181,8 +1196,6 @@ public class BothWaySwipeRefreshLayout extends ViewGroup
         // Dispatch up to the nested parent
         startNestedScroll(axes & ViewCompat.SCROLL_AXIS_VERTICAL);
         mTotalUnconsumed = 0;
-        mNestedScrollInProgress = true;
-        Log.d(LOG_TAG, "onNestedScrollAccepted - mNestedScrollInProgress = true");
     }
 
     @Override
@@ -1229,8 +1242,6 @@ public class BothWaySwipeRefreshLayout extends ViewGroup
     @Override
     public void onStopNestedScroll(View target) {
         mNestedScrollingParentHelper.onStopNestedScroll(target);
-        mNestedScrollInProgress = false;
-        Log.d(LOG_TAG, "onNestedScrollAccepted - mNestedScrollInProgress = false");
         // Finish the spinner for nested scrolling if we ever consumed any
         // unconsumed nested scroll
         if (mTotalUnconsumed > 0) {
@@ -1316,7 +1327,7 @@ public class BothWaySwipeRefreshLayout extends ViewGroup
                         mListener.onLoad();
                     }
                 }
-                mCurrentTargetOffsetTop = mCircleViews[dir].getTop();
+                mCurrentTargetOffsetTop = getMeasuredHeight() - mCircleViews[dir].getTop() - mCircleHeight;
             } else {
                 reset(dir);
             }

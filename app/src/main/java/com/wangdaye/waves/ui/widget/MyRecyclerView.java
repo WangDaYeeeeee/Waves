@@ -8,15 +8,13 @@ import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 
-import com.wangdaye.waves.ui.adapter.ShotsAdapter;
 import com.wangdaye.waves.ui.widget.swipeRefreshLayout.BothWaySwipeRefreshLayout;
 
 /**
  * My recycler view.
  * */
 
-public class MyRecyclerView extends RecyclerView
-        implements ShotsAdapter.LoadFinishCallback {
+public class MyRecyclerView extends RecyclerView {
     // widget
     private BothWaySwipeRefreshLayout swipeRefreshLayout;
     private MyFloatingActionButton fab;
@@ -90,11 +88,6 @@ public class MyRecyclerView extends RecyclerView
         this.loadMoreListener = listener;
     }
 
-    @Override
-    public void loadFinish(Object obj) {
-        isLoadingMore = false;
-    }
-
     // my on scroll listener.
 
     public void setOnMyOnScrollListener() {
@@ -117,21 +110,22 @@ public class MyRecyclerView extends RecyclerView
                 }
             }
 
+            if (getLayoutManager() instanceof LinearLayoutManager) {
+                int lastVisibleItem = ((LinearLayoutManager) getLayoutManager()).findLastVisibleItemPosition();
+                int totalItemCount = MyRecyclerView.this.getAdapter().getItemCount();
+
+                if (loadMoreListener != null && !isLoadingMore
+                        && lastVisibleItem >= totalItemCount - 10 && totalItemCount > 0 && dy > 0) {
+                    loadMoreListener.onLoadMore();
+                    isLoadingMore = true;
+                }
+            }
+
             if (swipeRefreshLayout != null
                     && isLoadingMore
                     && ViewCompat.canScrollVertically(MyRecyclerView.this, 1)) {
                 swipeRefreshLayout.setLoading(true);
             }
-/*
-            if (getLayoutManager() instanceof LinearLayoutManager) {
-                int lastVisibleItem = ((LinearLayoutManager) getLayoutManager()).findLastVisibleItemPosition();
-                int totalItemCount = MyRecyclerView.this.getAdapter().getItemCount();
-
-                if (loadMoreListener != null && !isLoadingMore && lastVisibleItem >= totalItemCount - 10 && totalItemCount > 0 && dy > 0) {
-                    loadMoreListener.onLoadMore();
-                    isLoadingMore = true;
-                }
-            }*/
         }
 
         @Override

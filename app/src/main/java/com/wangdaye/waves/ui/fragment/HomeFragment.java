@@ -62,7 +62,6 @@ public class HomeFragment extends Fragment
     private MyRecyclerView[] recyclerViews;
     private RelativeLayout[] airBallContainers;
 
-    private ShotsAdapter.LoadFinishCallback loadFinishCallback;
     private SafeHandler<HomeFragment> handler;
 
     // data
@@ -139,7 +138,6 @@ public class HomeFragment extends Fragment
         recyclerViews[0].setOnMyOnScrollListener();
         recyclerViews[0].setItemAnimator(new ShotsAdapter.ShotItemAnimator());
         recyclerViews[0].setOnLoadMoreListener(new MyOnLoadMoreListener(0));
-        this.loadFinishCallback = recyclerViews[0];
         recyclerViews[0].setAdapter(shotsAdapters[0]);
 
         if (shotItemType[1] == ShotsAdapter.MINI_TILE
@@ -155,7 +153,6 @@ public class HomeFragment extends Fragment
         recyclerViews[1].setOnMyOnScrollListener();
         recyclerViews[1].setItemAnimator(new ShotsAdapter.ShotItemAnimator());
         recyclerViews[1].setOnLoadMoreListener(new MyOnLoadMoreListener(1));
-        this.loadFinishCallback = recyclerViews[1];
         recyclerViews[1].setAdapter(shotsAdapters[1]);
     }
 
@@ -170,9 +167,9 @@ public class HomeFragment extends Fragment
                 (BothWaySwipeRefreshLayout) pages[0].findViewById(R.id.container_home_page_swipeRefreshLayout),
                 (BothWaySwipeRefreshLayout) pages[1].findViewById(R.id.container_home_page_swipeRefreshLayout)
         };
-        swipeRefreshLayouts[0].setOnRefreshAndLoadListener(new MyOnRefreshListener(0));
+        swipeRefreshLayouts[0].setOnRefreshAndLoadListener(new MyRefreshAnLoadListener(0));
         swipeRefreshLayouts[0].setColorSchemeColors(ContextCompat.getColor(getActivity(), R.color.colorPrimary));
-        swipeRefreshLayouts[1].setOnRefreshAndLoadListener(new MyOnRefreshListener(1));
+        swipeRefreshLayouts[1].setOnRefreshAndLoadListener(new MyRefreshAnLoadListener(1));
         swipeRefreshLayouts[1].setColorSchemeColors(ContextCompat.getColor(getActivity(), R.color.colorPrimary));
 
         this.recyclerViews = new MyRecyclerView[] {
@@ -444,10 +441,10 @@ public class HomeFragment extends Fragment
 
     // on refresh listener.
 
-    private class MyOnRefreshListener implements BothWaySwipeRefreshLayout.OnRefreshAndLoadListener {
+    private class MyRefreshAnLoadListener implements BothWaySwipeRefreshLayout.OnRefreshAndLoadListener {
         private int position;
 
-        public MyOnRefreshListener(int position) {
+        public MyRefreshAnLoadListener(int position) {
             this.position = position;
         }
 
@@ -586,7 +583,7 @@ public class HomeFragment extends Fragment
             }
 
             if (loadMore) {
-                loadFinishCallback.loadFinish(this);
+                recyclerViews[position].setLoadingMore(false);
                 swipeRefreshLayouts[position].setLoading(false);
             } else {
                 swipeRefreshLayouts[position].setRefreshing(false);
@@ -600,7 +597,7 @@ public class HomeFragment extends Fragment
                     Toast.LENGTH_SHORT).show();
 
             if (loadMore) {
-                loadFinishCallback.loadFinish(this);
+                recyclerViews[position].setLoadingMore(false);
                 swipeRefreshLayouts[position].setLoading(false);
             } else {
                 swipeRefreshLayouts[position].setRefreshing(false);
